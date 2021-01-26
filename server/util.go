@@ -11,7 +11,7 @@ func createFileList(files []os.FileInfo) []FileEntry {
 	entryList := make([]FileEntry, size)
 	for i, v := range files {
 		entryList[i] = FileEntry{
-			Path:    v.Name(),
+			Name:    v.Name(),
 			Size:    v.Size(),
 			Lastmod: v.ModTime(),
 		}
