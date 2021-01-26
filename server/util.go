@@ -44,7 +44,7 @@ func getDocumentDir() string {
 
 func initDocumentDirectory(path string) error {
 	// TODO: Expand with permissions check.
-	fmt.Printf("INI Editor: Using document directory %s\n", path)
+	fmt.Printf("Using document directory %s\n", path)
 
 	exists, err := fileExists(path)
 	if err != nil {
