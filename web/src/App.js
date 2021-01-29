@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import PreviousMap from 'postcss/lib/previous-map'
+import React from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const apiEndpoint = "http://localhost:8080"
+
+function Document(props) {
+  return <div class="bg-gray-500">
+    <img src={apiEndpoint + props.Url} alt={props.Name} />
+
+    {props.Name}
+  </div>
 }
 
-export default App;
+class Base extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      docs: [],
+      docsLoaded: false,
+      error: null
+    }
+  }
+
+  componentDidMount(){
+    fetch(apiEndpoint + "/api/v1/contentList")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            docs: result,
+            docsLoaded: true
+          })
+        },
+        (error) => {
+          this.setState({
+            error: error
+          })
+        }
+      )
+  }
+
+  render() {
+    if (this.state.docsLoaded === false) {
+      return <h1>Nothing yet!</h1>
+    } else {
+      return <div class="grid grid-cols-3 gap-4">{this.state.docs["files"].map((m, i) => {
+        return <div key={i}>{Document(m)}</div>
+      })}</div>
+    }
+  }
+}
+
+function App() {
+  return <div class="bg-gray-600"><Base /></div>
+}
+
+export default App
