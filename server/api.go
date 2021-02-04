@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,4 +23,16 @@ func apiFileList(c *gin.Context) {
 			"files": files,
 		})
 	}
+}
+
+func apiPatchTags(c *gin.Context) {
+	fileName := c.Param("fileName")
+	filePath := filepath.Join(getDocumentDir(), fileName)
+	exists, err := fileExists(filePath)
+	if exists == false {
+		c.JSON(400, gin.H {
+			"msg": err,
+		})
+	}
+
 }
