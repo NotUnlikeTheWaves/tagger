@@ -25,12 +25,19 @@ func apiFileList(c *gin.Context) {
 	}
 }
 
+func apiTagList(c *gin.Context) {
+	tags := [...]string{"outer-words", "games", "vidya", "foo", "bar"}
+	c.JSON(200, gin.H{
+		"tags": tags,
+	})
+}
+
 func apiPatchTags(c *gin.Context) {
 	fileName := c.Param("fileName")
 	filePath := filepath.Join(getDocumentDir(), fileName)
 	exists, err := fileExists(filePath)
 	if exists == false {
-		c.JSON(400, gin.H {
+		c.JSON(400, gin.H{
 			"msg": err,
 		})
 	}

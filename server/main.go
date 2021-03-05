@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func main() {
 	documentDir := getDocumentDir()
 	initDocumentDirectory(documentDir)
@@ -15,8 +14,8 @@ func main() {
 	r.Use(cors.Default())
 
 	r.GET("/api/v1/contentList", apiFileList)
+	r.GET("/api/v1/tagList", apiTagList)
 	r.PATCH("/api/v1/tags/:fileName", apiPatchTags)
 	r.Static("/api/v1/content", "./documents")
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
-
