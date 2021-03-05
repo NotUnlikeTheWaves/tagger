@@ -31,9 +31,9 @@ class Content extends React.Component {
   
     render() {
       if (this.state.docsLoaded === false) {
-        return <div class="w-9/12 grid grid-cols-3 gap-4">There is no content yet!</div>
+        return <div>There is no content yet!</div>
       } else {
-        return <div class="w-9/12 grid grid-cols-3 gap-4">
+        return <div class="grid grid-cols-3 gap-4">
               {
                 this.state.docs["files"].map((m, i) => {
                   return <div key={i}>{Document(m)}</div>

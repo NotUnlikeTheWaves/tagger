@@ -31,7 +31,7 @@ class TagOverview extends React.Component {
 
     render() {
         if(this.state.tagsLoaded === false) {
-            return <div class="w-9/12 grid grid-cols-3 gap-4 py-10">There is no content yet!</div>
+            return <div>There are no loaded tags yet!</div>
         } else {
             return <div class="flex flex-wrap items-right">
                 {
