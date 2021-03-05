@@ -1,6 +1,5 @@
 import React from 'react'
-
-const apiEndpoint = "http://localhost:8080"
+import apiEndpoint from './Api'
 
 class Content extends React.Component {
     constructor(props) {
@@ -32,9 +31,9 @@ class Content extends React.Component {
   
     render() {
       if (this.state.docsLoaded === false) {
-        return <div class="w-9/12 grid grid-cols-3 gap-4 py-10">There is no content yet!</div>
+        return <div class="w-9/12 grid grid-cols-3 gap-4">There is no content yet!</div>
       } else {
-        return <div class="w-9/12 grid grid-cols-3 gap-4 py-10">
+        return <div class="w-9/12 grid grid-cols-3 gap-4">
               {
                 this.state.docs["files"].map((m, i) => {
                   return <div key={i}>{Document(m)}</div>
