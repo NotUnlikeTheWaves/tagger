@@ -5,7 +5,7 @@ import React from 'react'
 const apiEndpoint = "http://localhost:8080"
 
 function Document(props) {
-  return <div class="bg-gray-500">
+  return <div class="border-solid border-4 border-blue-500 bg-red-500">
     <img src={apiEndpoint + props.Url} alt={props.Name} />
 
     {props.Name}
@@ -44,9 +44,12 @@ class Base extends React.Component {
     if (this.state.docsLoaded === false) {
       return <h1>Nothing yet!</h1>
     } else {
-      return <div class="grid grid-cols-3 gap-4">{this.state.docs["files"].map((m, i) => {
-        return <div key={i}>{Document(m)}</div>
-      })}</div>
+      return <div>
+        <h1>Hello</h1>
+        <div class="w-9/12 grid grid-cols-3 gap-4">{this.state.docs["files"].map((m, i) => {
+          return <div key={i}>{Document(m)}</div>
+        })}</div>
+        </div>
     }
   }
 }
