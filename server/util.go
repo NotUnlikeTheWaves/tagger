@@ -13,7 +13,7 @@ func createFileList(files []os.FileInfo) []FileEntry {
 		entryList[i] = FileEntry{
 			Name:    v.Name(),
 			Size:    v.Size(),
-			Lastmod: v.ModTime(),
+			LastMod: v.ModTime(),
 		}
 	}
 	return entryList
