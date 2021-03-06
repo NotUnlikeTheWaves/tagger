@@ -8,6 +8,7 @@ import (
 func main() {
 	documentDir := getDocumentDir()
 	initDocumentDirectory(documentDir)
+	initDb()
 
 	// Set up Gin stuff
 	r := gin.Default()
