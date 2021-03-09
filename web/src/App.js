@@ -1,4 +1,3 @@
-import PreviousMap from 'postcss/lib/previous-map'
 import React from 'react'
 import Content from './Content'
 import TagOverview from './Tags'
