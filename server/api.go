@@ -26,7 +26,7 @@ func apiFileList(c *gin.Context) {
 }
 
 func apiTagList(c *gin.Context) {
-	tags := [...]string{"outer-words", "games", "vidya", "foo", "bar"}
+	tags := GetTags()
 	c.JSON(200, gin.H{
 		"tags": tags,
 	})

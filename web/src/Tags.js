@@ -47,7 +47,7 @@ class TagOverview extends React.Component {
 function RenderTag(tag) {
     return <div class="px-1">
         <div class="bg-black border rounded text-white hover:text-black hover:bg-white cursor-pointer px-1 py-1">
-            #{tag}
+            #{tag.Name} {tag.Hidden && " (hidden)"}
         </div>
     </div>
 }

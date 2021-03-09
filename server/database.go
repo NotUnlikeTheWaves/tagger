@@ -6,19 +6,21 @@ import (
 	"os"
 
 	"github.com/qiniu/qmgo"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var client *qmgo.Client
+var ctx context.Context
 
 func initDb() {
 	fmt.Println("Init db")
 
-	ctx := context.Background()
+	ctx = context.Background()
 	var err error
 	client, err = qmgo.NewClient(ctx, &qmgo.Config{
 		Uri: "mongodb://localhost:27017",
 		Auth: &qmgo.Credential{
-			Password: "examsple",
+			Password: "example",
 			Username: "root",
 		},
 	})
@@ -30,4 +32,12 @@ func initDb() {
 	}
 
 	fmt.Println("Init db done.")
+}
+
+func findTags() []Tag {
+	db := client.Database("tagger")
+	coll := db.Collection("tags")
+	tags := []Tag{}
+	coll.Find(ctx, bson.M{}).All(&tags)
+	return tags
 }

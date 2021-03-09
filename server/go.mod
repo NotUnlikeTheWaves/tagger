@@ -8,4 +8,5 @@ require (
 	github.com/qiniu/qmgo v0.9.1
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	go.mongodb.org/mongo-driver v1.4.6
+	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 )
