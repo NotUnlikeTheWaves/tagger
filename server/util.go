@@ -6,11 +6,11 @@ import (
 	"path/filepath"
 )
 
-func createFileList(files []os.FileInfo) []FileEntry {
+func createFileList(files []os.FileInfo) []Document {
 	size := len(files)
-	entryList := make([]FileEntry, size)
+	entryList := make([]Document, size)
 	for i, v := range files {
-		entryList[i] = FileEntry{
+		entryList[i] = Document{
 			Name:    v.Name(),
 			Size:    v.Size(),
 			LastMod: v.ModTime(),

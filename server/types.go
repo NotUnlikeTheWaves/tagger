@@ -7,8 +7,8 @@ type Tag struct {
 	Hidden bool   `bson:"Hidden"`
 }
 
-// A FileEntry is a struct containing a file path and size in e.g. a list of files.
-type FileEntry struct {
+// A Document is a struct containing a file path and size in e.g. a list of files.
+type Document struct {
 	Name    string
 	Size    int64
 	LastMod time.Time

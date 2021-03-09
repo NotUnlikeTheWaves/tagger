@@ -41,3 +41,15 @@ func findTags() []Tag {
 	coll.Find(ctx, bson.M{}).All(&tags)
 	return tags
 }
+
+func findDocument(name string) (Document, error) {
+	db := client.Database("tagger")
+	coll := db.Collection("documents")
+	doc := Document{}
+	fmt.Printf("Trying to find document with name %s\n", name)
+	err := coll.Find(ctx, bson.M{"Name": name}).One(&doc)
+	if err != nil {
+		return Document{}, err
+	}
+	return doc, nil
+}
