@@ -4,31 +4,30 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/qiniu/qmgo"
 )
 
-var client *mongo.Client
+var client *qmgo.Client
 
 func initDb() {
 	fmt.Println("Init db")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+
+	ctx := context.Background()
 	var err error
-	client, err = mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017").SetAuth(options.Credential{
-		Username: "root",
-		Password: "example",
-	}))
+	client, err = qmgo.NewClient(ctx, &qmgo.Config{
+		Uri: "mongodb://localhost:27017",
+		Auth: &qmgo.Credential{
+			Password: "examsple",
+			Username: "root",
+		},
+	})
+
 	if err != nil {
-		fmt.Printf("Error while trying to instantiate DB connection: %s", err.Error())
+		fmt.Printf("Error while init mongo: %v", err)
+		fmt.Println("Exiting...")
 		os.Exit(0)
 	}
-	dbs, err := client.ListDatabaseNames(ctx, bson.D{})
-	for _, db := range dbs {
-		fmt.Printf("db found: %s\n", db)
-	}
+
 	fmt.Println("Init db done.")
 }
