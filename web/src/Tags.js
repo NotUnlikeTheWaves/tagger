@@ -44,7 +44,7 @@ class TagOverview extends React.Component {
     }
 }
 
-function RenderTag(tag) {
+const RenderTag = (tag) => {
     const textColor = !tag.Hidden ? "text-white" : "text-blue-300"
     return <div class="px-1">
         <div class={"bg-black border rounded " + textColor + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}>

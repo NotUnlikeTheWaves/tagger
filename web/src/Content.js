@@ -44,7 +44,7 @@ class Content extends React.Component {
     }
   }
 
-  function Document(props) {
+  const Document = (props) => {
     return <div class="block border-solid border-4 border-blue-500 hover:bg-yellow-500 bg-red-500 px-2 py-2">
       <img src={apiEndpoint + props.Url} alt={props.Name} />
   
