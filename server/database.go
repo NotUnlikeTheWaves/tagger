@@ -12,6 +12,12 @@ import (
 var client *qmgo.Client
 var ctx context.Context
 
+// Internal representation of DB document.
+type DbDocument struct {
+	Name string `bson:"Name"`
+	Tags []Tag  `bson:"Tags"`
+}
+
 func initDb() {
 	fmt.Println("Init db")
 
@@ -42,14 +48,31 @@ func findTags() []Tag {
 	return tags
 }
 
-func findDocument(name string) (Document, error) {
+func findDocumentTags(name string) ([]Tag, error) {
 	db := client.Database("tagger")
 	coll := db.Collection("documents")
-	doc := Document{}
+	doc := DbDocument{}
 	fmt.Printf("Trying to find document with name %s\n", name)
 	err := coll.Find(ctx, bson.M{"Name": name}).One(&doc)
 	if err != nil {
-		return Document{}, err
+		// If the doc doesn't exist, create it
+		if err.Error() == qmgo.ErrNoSuchDocuments.Error() {
+			coll.InsertOne(ctx, DbDocument{
+				Name: name,
+				Tags: []Tag{},
+			})
+			return []Tag{}, nil
+		}
+		// Otherwise something else went wrong.
+		return []Tag{}, err
 	}
-	return doc, nil
+	return doc.Tags, err
+}
+
+func updateDocument(document Document) error {
+	db := client.Database("tagger")
+	coll := db.Collection("documents")
+
+	err := coll.UpdateOne(ctx, bson.M{"Name": document.Name}, document)
+	return err
 }

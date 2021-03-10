@@ -42,7 +42,7 @@ func apiGetDocument(c *gin.Context) {
 		return
 	}
 
-	document, err := findDocument(fileName)
+	document, err := findDocumentTags(fileName)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"msg": err.Error(),
