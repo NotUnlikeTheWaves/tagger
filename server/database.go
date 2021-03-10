@@ -73,6 +73,13 @@ func updateDocument(document Document) error {
 	db := client.Database("tagger")
 	coll := db.Collection("documents")
 
-	err := coll.UpdateOne(ctx, bson.M{"Name": document.Name}, document)
+	dbDoc := DbDocument{
+		Tags: document.Tags,
+		Name: document.Name,
+	}
+
+	err := coll.UpdateOne(ctx, bson.M{"Name": document.Name}, bson.M{
+		"$set": dbDoc,
+	})
 	return err
 }

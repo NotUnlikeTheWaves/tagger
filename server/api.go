@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/ioutil"
-	"os"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
@@ -23,32 +22,7 @@ func apiFileList(c *gin.Context) {
 }
 
 func apiGetDocument(c *gin.Context) {
-	fileName := c.Param("fileName")
-	filePath := filepath.Join(getDocumentDir(), fileName)
-	exists, err := fileExists(filePath)
-	if exists == false {
-		c.JSON(400, gin.H{
-			"msg": "Document not found",
-		})
-		return
-	}
-	if err != nil {
-		c.JSON(400, gin.H{
-			"msg": err.Error(),
-		})
-		return
-	}
-
-	fileInfo, err := os.Lstat(filePath)
-
-	if err != nil {
-		c.JSON(400, gin.H{
-			"msg": err.Error(),
-		})
-		return
-	}
-
-	document, err := createDocumentFromFile(fileInfo)
+	document, err := retrieveDocumentFromFileName(c.Param("fileName"))
 	if err != nil {
 		c.JSON(400, gin.H{
 			"msg": err.Error(),
@@ -67,8 +41,48 @@ func apiTagList(c *gin.Context) {
 	})
 }
 
-func apiPatchTags(c *gin.Context) {
+func apiAddTags(c *gin.Context) {
 	fileName := c.Param("fileName")
+	document, err := retrieveDocumentFromFileName(fileName)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	var tags []Tag
+	err = c.BindJSON(&tags)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	for _, tagToAdd := range tags {
+		skip := false
+		for _, existingTag := range document.Tags {
+			if existingTag.Name == tagToAdd.Name &&
+				existingTag.Hidden == tagToAdd.Hidden {
+				skip = true
+			}
+		}
+		if skip == false {
+			document.Tags = append(document.Tags, tagToAdd)
+		}
+	}
+	err = updateDocument(document)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	c.JSON(200, document)
+}
+
+func apiRemoveTags(c *gin.Context) {
+	fileName := c.Param("fileName")
+	// tagName := c.Param("tagName")
 	filePath := filepath.Join(getDocumentDir(), fileName)
 	exists, err := fileExists(filePath)
 	if exists == false {

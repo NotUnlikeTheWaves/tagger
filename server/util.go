@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -17,6 +18,26 @@ func createFileList(files []os.FileInfo) []Document {
 		entryList[i] = doc
 	}
 	return entryList
+}
+
+func retrieveDocumentFromFileName(fileName string) (Document, error) {
+	filePath := filepath.Join(getDocumentDir(), fileName)
+	exists, err := fileExists(filePath)
+	if exists == false {
+		return Document{}, errors.New("File not found")
+	}
+	if err != nil {
+		return Document{}, err
+	}
+
+	fileInfo, err := os.Lstat(filePath)
+
+	if err != nil {
+		return Document{}, err
+	}
+
+	document, err := createDocumentFromFile(fileInfo)
+	return document, err
 }
 
 func createDocumentFromFile(fileInfo os.FileInfo) (Document, error) {
