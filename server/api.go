@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
@@ -16,9 +16,6 @@ func apiFileList(c *gin.Context) {
 		})
 	} else {
 		files := createFileList(files)
-		for i := range files {
-			files[i].Url = fmt.Sprintf("/api/v1/content/%s", files[i].Name)
-		}
 		c.JSON(200, gin.H{
 			"files": files,
 		})
@@ -42,7 +39,16 @@ func apiGetDocument(c *gin.Context) {
 		return
 	}
 
-	document, err := findDocumentTags(fileName)
+	fileInfo, err := os.Lstat(filePath)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+
+	document, err := createDocumentFromFile(fileInfo)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"msg": err.Error(),
@@ -70,5 +76,4 @@ func apiPatchTags(c *gin.Context) {
 			"msg": err,
 		})
 	}
-
 }

@@ -10,18 +10,28 @@ func createFileList(files []os.FileInfo) []Document {
 	size := len(files)
 	entryList := make([]Document, size)
 	for i, v := range files {
-		tags, err := findDocumentTags(v.Name())
+		doc, err := createDocumentFromFile(v)
 		if err != nil {
-			fmt.Printf("Unknown error in creatFileList when trying to get tags: %s", err.Error())
+			fmt.Printf("Error doing createDocumentFromFile: %s", err.Error())
 		}
-		entryList[i] = Document{
-			Name:    v.Name(),
-			Size:    v.Size(),
-			LastMod: v.ModTime(),
-			Tags:    tags,
-		}
+		entryList[i] = doc
 	}
 	return entryList
+}
+
+func createDocumentFromFile(fileInfo os.FileInfo) (Document, error) {
+	tags, err := findDocumentTags(fileInfo.Name())
+	if err != nil {
+		return Document{}, err
+	}
+	document := Document{
+		Name:    fileInfo.Name(),
+		Size:    fileInfo.Size(),
+		LastMod: fileInfo.ModTime(),
+		Tags:    tags,
+		Url:     fmt.Sprintf("/api/v1/content/%s", fileInfo.Name()),
+	}
+	return document, nil
 }
 
 func fileExists(path string) (bool, error) {
@@ -65,4 +75,9 @@ func initDocumentDirectory(path string) error {
 	}
 	fmt.Println("Successfully inited document directory.")
 	return nil
+}
+
+func mergeWithDbModel(doc Document, dbDoc DbDocument) Document {
+	doc.Tags = dbDoc.Tags
+	return doc
 }
