@@ -18,6 +18,7 @@ func main() {
 	r.GET("/api/v1/tagList", apiTagList)
 	r.GET("/api/v1/document/:fileName", apiGetDocument)
 	r.POST("/api/v1/document/:fileName/tags", apiAddTags)
+	r.DELETE("/api/v1/document/:fileName/tags", apiRemoveTags)
 	r.Static("/api/v1/content", "./documents")
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

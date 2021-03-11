@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/ioutil"
-	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -82,12 +81,40 @@ func apiAddTags(c *gin.Context) {
 
 func apiRemoveTags(c *gin.Context) {
 	fileName := c.Param("fileName")
-	// tagName := c.Param("tagName")
-	filePath := filepath.Join(getDocumentDir(), fileName)
-	exists, err := fileExists(filePath)
-	if exists == false {
+	document, err := retrieveDocumentFromFileName(fileName)
+	if err != nil {
 		c.JSON(400, gin.H{
-			"msg": err,
+			"msg": err.Error(),
 		})
+		return
 	}
+	var tags []Tag
+	err = c.BindJSON(&tags)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	for i, tagToRemove := range tags {
+		remove := false
+		for _, existingTag := range document.Tags {
+			if existingTag.Name == tagToRemove.Name &&
+				existingTag.Hidden == tagToRemove.Hidden {
+				remove = true
+			}
+		}
+		if remove {
+			document.Tags[i] = document.Tags[len(document.Tags)-1]
+			document.Tags = document.Tags[:len(document.Tags)-1]
+		}
+	}
+	err = updateDocument(document)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	c.JSON(200, document)
 }
