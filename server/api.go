@@ -96,16 +96,16 @@ func apiRemoveTags(c *gin.Context) {
 		})
 		return
 	}
-	for i, tagToRemove := range tags {
-		remove := false
-		for _, existingTag := range document.Tags {
+	for _, tagToRemove := range tags {
+		remove := -1
+		for i, existingTag := range document.Tags {
 			if existingTag.Name == tagToRemove.Name &&
 				existingTag.Hidden == tagToRemove.Hidden {
-				remove = true
+				remove = i
 			}
 		}
-		if remove {
-			document.Tags[i] = document.Tags[len(document.Tags)-1]
+		if remove != -1 {
+			document.Tags[remove] = document.Tags[len(document.Tags)-1]
 			document.Tags = document.Tags[:len(document.Tags)-1]
 		}
 	}
