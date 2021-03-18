@@ -1,5 +1,6 @@
 import React from 'react'
 import apiEndpoint from './Api'
+import { RenderTag } from './Tags'
 
 class Content extends React.Component {
     constructor(props) {
@@ -45,11 +46,25 @@ class Content extends React.Component {
   }
 
   const Document = (props) => {
-    return <div class="block border-solid border-4 border-blue-500 hover:bg-yellow-500 bg-red-500 px-2 py-2">
-      <img src={apiEndpoint + props.Url} alt={props.Name} />
-  
-      <div class="text-yellow-400 text-right">
-        {props.Name}
+    return <div class="block border-solid border-4 border-blue-500 hover:bg-yellow-500 bg-red-500  px-2 py-2">
+      <div class="flex flex-rows space-x-400">
+        <div>
+          <img src={apiEndpoint + props.Url} alt={props.Name} />
+      
+          <div class="text-yellow-400 text-right">
+            {props.Name}
+          </div>
+        </div>
+        <div class="flex">
+          {
+              props.Tags.map((m, i) => {
+                          // return m.Name
+                            return <div key={i}>{RenderTag(m)}</div>
+                        })
+                      
+            // RenderTag({Name: "hey", Hidden: false})
+          }
+        </div>
       </div>
     </div>
   }

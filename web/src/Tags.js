@@ -54,3 +54,4 @@ const RenderTag = (tag) => {
 }
 
 export default TagOverview
+export {TagOverview, RenderTag}
