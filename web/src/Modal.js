@@ -2,7 +2,7 @@ import React from "react";
 // Source: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/modals/regular
 
 
-export default function Modal() {
+export default function Modal(document, updateTags) {
   const [showModal, setShowModal] = React.useState(false);
   return (
     <>
@@ -22,12 +22,12 @@ export default function Modal() {
           >
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-600 outline-none focus:outline-none">
                   
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-gray-700 rounded-t">
                   <h3 className="text-3xl font-semibold">
-                    Modal Title
+                    Add tags
                   </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -43,7 +43,7 @@ export default function Modal() {
 
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <p className="my-4 text-gray-600 text-lg leading-relaxed">
+                  <p className="my-4 text-blue-50 text-lg leading-relaxed">
                     I always felt like I could do anything. That’s the main
                     thing people are controlled by! Thoughts- their perception
                     of themselves! They're slowed down by their perception of
@@ -53,7 +53,7 @@ export default function Modal() {
                 </div>
 
                 {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                <div className="flex items-center justify-end p-6 border-t border-solid border-gray-700 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
                     type="button"
