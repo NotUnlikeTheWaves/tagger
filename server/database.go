@@ -42,9 +42,25 @@ func initDb() {
 
 func findTags() []Tag {
 	db := client.Database("tagger")
-	coll := db.Collection("tags")
+	coll := db.Collection("documents")
 	tags := []Tag{}
-	coll.Find(ctx, bson.M{}).All(&tags)
+	coll.Aggregate(ctx, []bson.M{
+		bson.M{
+			"$unwind": "$Tags",
+		},
+		bson.M{
+			"$group": bson.M{
+				"_id": "$Tags",
+			},
+		},
+		bson.M{
+			"$project": bson.M{
+				"_id":    0,
+				"Name":   "$_id.Name",
+				"Hidden": "$_id.Hidden",
+			},
+		},
+	}).All(&tags)
 	return tags
 }
 
