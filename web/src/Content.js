@@ -35,13 +35,15 @@ class Content extends React.Component {
       if (this.state.docsLoaded === false) {
         return <div>There is no content yet!</div>
       } else {
-        return <div class="grid grid-cols-3 gap-4">
-              {
-                this.state.docs["files"].map((m, i) => {
-                  return <div key={i}>{Document(m)}</div>
-                })
-              }
-            </div>
+        return (
+          <div class="grid grid-cols-3 gap-4">
+            {
+              this.state.docs["files"].map((m, i) => {
+                return <div key={i}>{Document(m)}</div>
+              })
+            }
+          </div>
+        )
       }
     }
   }
@@ -60,12 +62,18 @@ class Content extends React.Component {
         <div class="flex items-stretch place-content-between gap-2 border-l border-blue-600 flex-col pl-2">
           <div class="flex flex-row">
           {
-              props.Tags.map((m, i) => {
+              props.Tags.filter(m => m.Hidden == false).map((m, i) => {
                           // return m.Name
                             return <div key={i}>{RenderTag(m)}</div>
                         })
-                      
-            // RenderTag({Name: "hey", Hidden: false})
+          }
+          </div>
+          <div class="flex flex-row">
+          {
+              props.Tags.filter(m => m.Hidden == true).map((m, i) => {
+                          // return m.Name
+                            return <div key={i}>{RenderTag(m)}</div>
+                        })
           }
           </div>
           <div class="">
