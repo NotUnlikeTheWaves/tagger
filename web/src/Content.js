@@ -1,6 +1,6 @@
 import React from 'react'
 import apiEndpoint from './Api'
-import { RenderTag, RenderTagList } from './Tags'
+import { RenderTagList } from './Tags'
 import EditTags from './EditTags'
 
 class Content extends React.Component {
@@ -41,8 +41,8 @@ class Content extends React.Component {
               this.state.docs["files"].map((document, i) => {
                 return (
                     <div key={i}>
-                      <div class="block border-solid rounded border-4 border-blue-600 hover:bg-yellow-500 bg-gray-500 px-2 py-2">
-                        {Document(document, false)}
+                      <div class="block border-solid rounded border-4 border-blue-600 hover:bg-opacity-100 bg-opacity-75 bg-gray-500 px-2 py-2">
+                        <Document document={document} isEdit={false} />
                       </div>
                     </div>
                    )
@@ -54,27 +54,31 @@ class Content extends React.Component {
     }
   }
 
-  const Document = (document, isEdit) => {
+  const Document = (props) => {
     return (
       <div class="flex flex-rows gap-2">
         <div class="w-2/3">
-          <img class="mx-auto" src={apiEndpoint + document.Url} alt={document.Name} />
+          <img class="mx-auto" src={apiEndpoint + props.document.Url} alt={props.document.Name} />
       
           <div class="text-yellow-400 text-right underline">
-            {document.Name}
+            {props.document.Name}
           </div>
         </div>
         {/* Place content between seems a bit hacky but gives me the result I want */}
-        <div class="w-1/3 flex items-stretch place-content-between gap-2 border-l border-blue-600 flex-col pl-2">
+        <div class="w-1/3 flex items-stretch place-content-between gap-2 border-l-4 border-blue-600 flex-col pl-2">
           <div class="">
           {
-            RenderTagList(document.Tags, false)
+            RenderTagList(props.document.Tags, false)
           }
           </div>
           {
-            !isEdit && <div class="">
-              <EditTags document={document} />
-            </div>
+            !props.isEdit ? <EditTags document={props.document} />
+            : <div class="self-center">
+                <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 ">
+                <label class="text-blue-600 font-bold">#</label>
+                <input type="text" class="focus:outline-none font-bold pl-1 pb-1 bg-blue-200 w-10/12 text-gray-700 focus:text-gray-600" />
+                </form>
+              </div>
           }
         </div>
       </div>)
@@ -82,3 +86,4 @@ class Content extends React.Component {
   
 
 export default Content
+export {Content, Document}

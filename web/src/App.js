@@ -12,7 +12,7 @@ const App = () => {
         <Content />
         <div>
           <form class="bg-blue-100 border rounded py-1 px-1 ">
-          # <input type="text" class="bg-blue-100 w-4/12"/>
+          # <input type="text" class="bg-blue-100"/>
           </form>
         </div>
         <Modal />
