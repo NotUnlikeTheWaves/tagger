@@ -1,6 +1,7 @@
 import React from 'react'
 import apiEndpoint from './Api'
 import { RenderTag } from './Tags'
+import Modal from './Modal'
 
 class Content extends React.Component {
     constructor(props) {
@@ -46,8 +47,8 @@ class Content extends React.Component {
   }
 
   const Document = (props) => {
-    return <div class="block border-solid rounded border-4 border-blue-500 hover:bg-yellow-500 bg-gray-500  px-2 py-2">
-      <div class="flex flex-rows space-x-400">
+    return <div class="block border-solid rounded border-4 border-blue-600 hover:bg-yellow-500 bg-gray-500 px-2 py-2">
+      <div class="flex flex-rows gap-2">
         <div>
           <img src={apiEndpoint + props.Url} alt={props.Name} />
       
@@ -55,7 +56,9 @@ class Content extends React.Component {
             {props.Name}
           </div>
         </div>
-        <div class="flex">
+        {/* Place content between seems a bit hacky but gives me the result I want */}
+        <div class="flex items-stretch place-content-between gap-2 border-l border-blue-600 flex-col pl-2">
+          <div class="flex flex-row">
           {
               props.Tags.map((m, i) => {
                           // return m.Name
@@ -64,6 +67,10 @@ class Content extends React.Component {
                       
             // RenderTag({Name: "hey", Hidden: false})
           }
+          </div>
+          <div class="">
+          <Modal />
+          </div>
         </div>
       </div>
     </div>
