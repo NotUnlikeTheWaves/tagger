@@ -1,5 +1,6 @@
 import React from "react";
-import { Document } from "./Content"
+import { RenderDocument } from "./Content"
+import { RenderTagList } from "./Tags"
 // Source: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/modals/regular
 
 
@@ -42,7 +43,29 @@ export default function EditTags(props) {
 
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <Document document={props.document} isEdit={true} addTag={props.addTag} />
+                  <div class="flex flex-rows gap-2">
+                    <div class="w-2/3">
+                      {RenderDocument(props.document)}
+
+                      <div class="text-yellow-400 text-right underline">
+                        {props.document.Name}
+                      </div>
+                    </div>
+                    {/* Place content between seems a bit hacky but gives me the result I want */}
+                    <div class="w-1/3 flex items-stretch place-content-between gap-2 border-l-4 border-blue-600 flex-col pl-2">
+                      <div class="">
+                      {
+                        RenderTagList(props.document.Tags, false)
+                      }
+                      </div>
+                      <div class="self-center">
+                            <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 " onSubmit={ props.addTag }>
+                            <label class="text-blue-600 font-bold">#</label>
+                            <input type="text" class="focus:outline-none font-bold pl-1 pb-1 bg-blue-200 w-10/12 text-gray-700 focus:text-gray-600" />
+                            </form>
+                          </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
