@@ -1,5 +1,5 @@
 import React from 'react'
-import apiEndpoint from './Api'
+import {apiEndpoint} from './Api'
 import { RenderTagList } from './Tags'
 import EditTags from './EditTags'
 
@@ -11,9 +11,10 @@ class Content extends React.Component {
         docsLoaded: false,
         error: null
       }
+      this.addTag.bind(this)
     }
   
-    componentDidMount(){
+    componentDidMount() {
       fetch(apiEndpoint + "/api/v1/contentList")
         .then(res => res.json())
         .then(
@@ -30,6 +31,12 @@ class Content extends React.Component {
           }
         )
     }
+
+    addTag(event) {
+      event.preventDefault();
+      console.log("AddTag event")
+      console.log(event)
+    }
   
     render() {
       if (this.state.docsLoaded === false) {
@@ -42,7 +49,7 @@ class Content extends React.Component {
                 return (
                     <div key={i}>
                       <div class="block border-solid rounded border-4 border-blue-600 hover:bg-opacity-100 bg-opacity-75 bg-gray-500 px-2 py-2">
-                        <Document document={document} isEdit={false} />
+                        <Document document={document} isEdit={false} addTag={this.addTag} />
                       </div>
                     </div>
                    )
@@ -55,6 +62,9 @@ class Content extends React.Component {
   }
 
   const Document = (props) => {
+    console.log("lul:")
+    console.log(props.addTag)
+    const [showModal, setShowModal] = React.useState(false);
     return (
       <div class="flex flex-rows gap-2">
         <div class="w-2/3">
@@ -72,9 +82,9 @@ class Content extends React.Component {
           }
           </div>
           {
-            !props.isEdit ? <EditTags document={props.document} />
+            !props.isEdit ? <EditTags document={props.document}  addTag = {props.addTag}/>
             : <div class="self-center">
-                <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 ">
+                <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 " onSubmit={ props.addTag }>
                 <label class="text-blue-600 font-bold">#</label>
                 <input type="text" class="focus:outline-none font-bold pl-1 pb-1 bg-blue-200 w-10/12 text-gray-700 focus:text-gray-600" />
                 </form>

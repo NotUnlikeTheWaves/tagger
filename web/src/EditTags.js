@@ -20,7 +20,7 @@ export default function EditTags(props) {
           <div
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+            <div className="relative w-auto my-6 mx-auto">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-600 outline-none focus:outline-none">
                 {/*header*/}
@@ -42,7 +42,7 @@ export default function EditTags(props) {
 
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <Document document={props.document} isEdit={true} />
+                  <Document document={props.document} isEdit={true} addTag={props.addTag} />
                 </div>
               </div>
             </div>
