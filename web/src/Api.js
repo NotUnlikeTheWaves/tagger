@@ -1,14 +1,16 @@
 const apiEndpoint = "http://localhost:8080"
 
-const AddTag = (document, tag) => {
+async function ApiAddTags(document, tags) {
     //"/api/v1/document/:fileName/tags"
-    fetch(apiEndpoint = "/api/v1/document/" + document.Name + "/tags",
+    const response = await fetch(apiEndpoint + "/api/v1/document/" + document.Name + "/tags",
     {
         method: 'POST',
-        body: [ JSON.stringify(tag) ]
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tags)
     })
+    return response.ok
 }
 
 
-export {apiEndpoint}
+export {apiEndpoint, ApiAddTags}
 export default apiEndpoint

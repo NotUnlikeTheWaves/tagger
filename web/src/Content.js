@@ -1,5 +1,5 @@
 import React from 'react'
-import {apiEndpoint} from './Api'
+import {apiEndpoint, ApiAddTags} from './Api'
 import { RenderTagList } from './Tags'
 import EditTags from './EditTags'
 
@@ -62,12 +62,14 @@ class Document extends React.Component {
     this.state = {
       document: props.document
     }
-    this.addTag.bind(this)
-    this.addTag.bind(this)
   }
 
   addTag(tag) {
-
+    console.log("adding tag:")
+    console.log(tag)
+    var result = ApiAddTags(this.state.document, [tag])
+    console.log("result is")
+    result.then(r => console.log(r))
   }
 
   removeTag(tag) {
@@ -95,7 +97,7 @@ class Document extends React.Component {
           }
           </div>
           {
-            <EditTags document={this.state.document}  addTag = {this.addTag} />
+            <EditTags document={this.state.document}  addTag = {this.addTag.bind(this)} removeTag = {this.removeTag} />
           }
         </div>
       </div>)

@@ -6,6 +6,16 @@ import { RenderTagList } from "./Tags"
 
 export default function EditTags(props) {
   const [showModal, setShowModal] = React.useState(false);
+  const [addTagField, setAddTagField] = React.useState("sample");
+
+  function submitNewTag(e) {
+    e.preventDefault()
+    props.addTag({
+      Name: addTagField,
+      Hidden: false
+    })
+  }
+
   return (
     <>
       <button
@@ -59,9 +69,14 @@ export default function EditTags(props) {
                       }
                       </div>
                       <div class="self-center">
-                        <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 " onSubmit={ props.addTag }>
+                        <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 " onSubmit={(e) => submitNewTag(e)}>
                         <label class="text-blue-600 font-bold">#</label>
-                        <input type="text" class="focus:outline-none font-bold pl-1 pb-1 bg-blue-200 w-10/12 text-gray-700 focus:text-gray-600" />
+                        <input
+                          value={addTagField}
+                          type="text"
+                          class="focus:outline-none font-bold pl-1 pb-1 bg-blue-200 w-10/12 text-gray-700 focus:text-gray-600"
+                          onChange={(e) => setAddTagField(e.target.value)}
+                        />
                         </form>
                       </div>
                     </div>
