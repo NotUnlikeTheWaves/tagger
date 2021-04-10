@@ -1,6 +1,5 @@
 import React from "react";
 import { RenderDocument } from "./Content"
-import { RenderTagList } from "./Tags"
 // Source: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/modals/regular
 
 
@@ -14,6 +13,35 @@ export default function EditTags(props) {
       Name: addTagField,
       Hidden: false
     })
+  }
+
+  function RenderTagsInEditMode(tags) {
+    const RenderTag = (tag) => {
+      const textColor = !tag.Hidden ? "text-white" : "text-blue-300"
+      return <div class="px-1">
+          <div class={"bg-black border rounded " + textColor + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}>
+              #{tag.Name}
+          </div>
+      </div>
+    }
+    return (
+        <div class={"flex flex-col items-left gap-2"}>
+            <div class="flex flex-row flex-wrap mr-0 ">
+                {
+                    tags.filter(tag => tag.Hidden === false).map((m, i) => {
+                        return <div key={i}>{RenderTag(m)}</div>
+                    })
+                }
+            </div>
+            <div class="flex flex-row flex-wrap">
+                {
+                    tags.filter(tag => tag.Hidden === true).map((m, i) => {
+                        return <div key={i}>{RenderTag(m)}</div>
+                    })
+                }
+            </div>
+        </div>
+    )
   }
 
   return (
@@ -65,7 +93,7 @@ export default function EditTags(props) {
                     <div class="w-1/3 flex items-stretch place-content-between gap-2 border-l-4 border-blue-600 flex-col pl-2">
                       <div class="">
                       {
-                        RenderTagList(props.document.Tags, false)
+                        RenderTagsInEditMode(props.document.Tags)
                       }
                       </div>
                       <div class="self-center">

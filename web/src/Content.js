@@ -1,6 +1,5 @@
 import React from 'react'
 import {apiEndpoint, ApiAddTags} from './Api'
-import { RenderTagList } from './Tags'
 import EditTags from './EditTags'
 
 class Content extends React.Component {
@@ -57,8 +56,6 @@ class Content extends React.Component {
 class Document extends React.Component {
   constructor(props) {
     super(props)
-    console.log("props")
-    console.log(props)
     this.state = {
       document: props.document
     }
@@ -84,6 +81,37 @@ class Document extends React.Component {
 
   }
 
+
+  RenderTagsInDocument() {
+    const tags = this.state.document.Tags
+    const RenderTag = (tag) => {
+      const textColor = !tag.Hidden ? "text-white" : "text-blue-300"
+      return <div class="px-1">
+          <div class={"bg-black border rounded " + textColor + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}>
+              #{tag.Name}
+          </div>
+      </div>
+    }
+    return (
+        <div class={"flex flex-col items-left gap-2"}>
+            <div class="flex flex-row flex-wrap mr-0 ">
+                {
+                    tags.filter(tag => tag.Hidden === false).map((m, i) => {
+                        return <div key={i}>{RenderTag(m)}</div>
+                    })
+                }
+            </div>
+            <div class="flex flex-row flex-wrap">
+                {
+                    tags.filter(tag => tag.Hidden === true).map((m, i) => {
+                        return <div key={i}>{RenderTag(m)}</div>
+                    })
+                }
+            </div>
+        </div>
+    )
+  }
+
   render() {
     return (
       <div class="flex flex-rows gap-2">
@@ -98,7 +126,7 @@ class Document extends React.Component {
         <div class="w-1/3 flex items-stretch place-content-between gap-2 border-l-4 border-blue-600 flex-col pl-2">
           <div class="">
           {
-            RenderTagList(this.state.document.Tags, false)
+            this.RenderTagsInDocument()
           }
           </div>
           {
