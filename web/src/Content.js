@@ -11,7 +11,6 @@ class Content extends React.Component {
       docsLoaded: false,
       error: null
     }
-    this.addTag.bind(this)
   }
 
   componentDidMount() {
@@ -32,12 +31,6 @@ class Content extends React.Component {
       )
   }
 
-  addTag(event) {
-    event.preventDefault();
-    console.log("AddTag event")
-    console.log(event)
-  }
-
   render() {
     if (this.state.docsLoaded === false) {
       return <div>There is no content yet!</div>
@@ -49,7 +42,7 @@ class Content extends React.Component {
               return (
                   <div key={i}>
                     <div class="block border-solid rounded border-4 border-blue-600 hover:bg-opacity-100 bg-opacity-75 bg-gray-500 px-2 py-2">
-                      <Document document={document} isEdit={false} addTag={this.addTag} />
+                      <Document document={document} />
                     </div>
                   </div>
                   )
@@ -61,30 +54,52 @@ class Content extends React.Component {
   }
 }
 
-const Document = (props) => {
-  console.log("lul:")
-  console.log(props.addTag)
-  return (
-    <div class="flex flex-rows gap-2">
-      <div class="w-2/3">
-        {RenderDocument(props.document)}
+class Document extends React.Component {
+  constructor(props) {
+    super(props)
+    console.log("props")
+    console.log(props)
+    this.state = {
+      document: props.document
+    }
+    this.addTag.bind(this)
+    this.addTag.bind(this)
+  }
 
-        <div class="text-yellow-400 text-right underline">
-          {props.document.Name}
+  addTag(tag) {
+
+  }
+
+  removeTag(tag) {
+
+  }
+
+  render() {
+    console.log("doc:")
+    console.log(this.state.document)
+    // return "hi";
+    return (
+      <div class="flex flex-rows gap-2">
+        <div class="w-2/3">
+          {RenderDocument(this.state.document)}
+
+          <div class="text-yellow-400 text-right underline">
+            {this.state.document.Name}
+          </div>
         </div>
-      </div>
-      {/* Place content between seems a bit hacky but gives me the result I want */}
-      <div class="w-1/3 flex items-stretch place-content-between gap-2 border-l-4 border-blue-600 flex-col pl-2">
-        <div class="">
-        {
-          RenderTagList(props.document.Tags, false)
-        }
+        {/* Place content between seems a bit hacky but gives me the result I want */}
+        <div class="w-1/3 flex items-stretch place-content-between gap-2 border-l-4 border-blue-600 flex-col pl-2">
+          <div class="">
+          {
+            RenderTagList(this.state.document.Tags, false)
+          }
+          </div>
+          {
+            <EditTags document={this.state.document}  addTag = {this.addTag} />
+          }
         </div>
-        {
-          <EditTags document={props.document}  addTag = {props.addTag} />
-        }
-      </div>
-    </div>)
+      </div>)
+  }
 }
   
 const RenderDocument = (document) => {

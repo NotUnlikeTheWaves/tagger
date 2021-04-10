@@ -59,11 +59,11 @@ export default function EditTags(props) {
                       }
                       </div>
                       <div class="self-center">
-                            <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 " onSubmit={ props.addTag }>
-                            <label class="text-blue-600 font-bold">#</label>
-                            <input type="text" class="focus:outline-none font-bold pl-1 pb-1 bg-blue-200 w-10/12 text-gray-700 focus:text-gray-600" />
-                            </form>
-                          </div>
+                        <form class="bg-blue-200 border-2 border-blue-600 rounded py-2 px-2 w-10/12 " onSubmit={ props.addTag }>
+                        <label class="text-blue-600 font-bold">#</label>
+                        <input type="text" class="focus:outline-none font-bold pl-1 pb-1 bg-blue-200 w-10/12 text-gray-700 focus:text-gray-600" />
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
