@@ -65,11 +65,19 @@ class Document extends React.Component {
   }
 
   addTag(tag) {
-    console.log("adding tag:")
-    console.log(tag)
     var result = ApiAddTags(this.state.document, [tag])
-    console.log("result is")
-    result.then(r => console.log(r))
+    result.then(succes => {
+      if(succes == true) {
+        var document = {...this.state.document}
+        document.Tags.push(tag)
+        this.setState({
+          document: document
+        })
+      } else {
+        console.log("Failed to add tag! Tag:")
+        console.log(tag)
+      }
+    })
   }
 
   removeTag(tag) {
@@ -77,9 +85,6 @@ class Document extends React.Component {
   }
 
   render() {
-    console.log("doc:")
-    console.log(this.state.document)
-    // return "hi";
     return (
       <div class="flex flex-rows gap-2">
         <div class="w-2/3">
