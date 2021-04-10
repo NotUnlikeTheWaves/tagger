@@ -10,12 +10,6 @@ const App = () => {
         <div>Hello, this is Tagger</div>
         <TagOverview />
         <Content />
-        <div>
-          <form class="bg-blue-100 border rounded py-1 px-1 ">
-          # <input type="text" class="bg-blue-100"/>
-          </form>
-        </div>
-        <Modal />
       </div>
     </div>
   )

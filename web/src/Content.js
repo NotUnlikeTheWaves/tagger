@@ -1,5 +1,5 @@
 import React from 'react'
-import {apiEndpoint, ApiAddTags} from './Api'
+import {apiEndpoint, ApiAddTags, ApiDeleteTags} from './Api'
 import EditTags from './EditTags'
 
 class Content extends React.Component {
@@ -78,7 +78,19 @@ class Document extends React.Component {
   }
 
   removeTag(tag) {
-
+    var result = ApiDeleteTags(this.state.document, [tag])
+    result.then(succes => {
+      if(succes === true) {
+        var document = {...this.state.document}
+        document.Tags = document.Tags.filter(e => e != tag)
+        this.setState({
+          document: document
+        })
+      } else {
+        console.log("Failed to delete tag! Tag:")
+        console.log(tag)
+      }
+    })
   }
 
 
@@ -130,7 +142,7 @@ class Document extends React.Component {
           }
           </div>
           {
-            <EditTags document={this.state.document}  addTag = {this.addTag.bind(this)} removeTag = {this.removeTag} />
+            <EditTags document={this.state.document}  addTag = {this.addTag.bind(this)} removeTag = {this.removeTag.bind(this)} />
           }
         </div>
       </div>)
