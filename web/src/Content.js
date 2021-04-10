@@ -67,7 +67,7 @@ class Document extends React.Component {
   addTag(tag) {
     var result = ApiAddTags(this.state.document, [tag])
     result.then(succes => {
-      if(succes == true) {
+      if(succes === true) {
         var document = {...this.state.document}
         document.Tags.push(tag)
         this.setState({

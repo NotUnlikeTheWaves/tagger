@@ -39,19 +39,19 @@ class TagOverview extends React.Component {
 }
 
 const RenderTagList = (tags, center, selectCallBack) => {
-    var align = center == true ? "items-center" : "items-left"
+    var align = center === true ? "items-center" : "items-left"
     return (
         <div class={"flex flex-col " + align + " gap-2"}>
             <div class="flex flex-row mr-0">
                 {
-                    tags.filter(tag => tag.Hidden == false).map((m, i) => {
+                    tags.filter(tag => tag.Hidden === false).map((m, i) => {
                         return <div key={i}>{RenderTag(m)}</div>
                     })
                 }
             </div>
             <div class="flex flex-row">
                 {
-                    tags.filter(tag => tag.Hidden == true).map((m, i) => {
+                    tags.filter(tag => tag.Hidden === true).map((m, i) => {
                         return <div key={i}>{RenderTag(m)}</div>
                     })
                 }
