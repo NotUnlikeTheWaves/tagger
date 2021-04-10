@@ -42,14 +42,14 @@ const RenderTagList = (tags, center, selectCallBack) => {
     var align = center === true ? "items-center" : "items-left"
     return (
         <div class={"flex flex-col " + align + " gap-2"}>
-            <div class="flex flex-row mr-0">
+            <div class="flex flex-row flex-wrap mr-0 ">
                 {
                     tags.filter(tag => tag.Hidden === false).map((m, i) => {
                         return <div key={i}>{RenderTag(m)}</div>
                     })
                 }
             </div>
-            <div class="flex flex-row">
+            <div class="flex flex-row flex-wrap">
                 {
                     tags.filter(tag => tag.Hidden === true).map((m, i) => {
                         return <div key={i}>{RenderTag(m)}</div>
