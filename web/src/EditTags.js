@@ -20,7 +20,7 @@ export default function EditTags(props) {
     const RenderTag = (tag) => {
       const textColor = !tag.Hidden ? "text-white" : "text-blue-300"
       return <div class="px-1">
-          <div class={"bg-black border rounded " + textColor + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}>
+          <div class={"hover:opacity-70 bg-black border rounded " + textColor + " hover:line-through cursor-pointer px-1 py-1"}>
               #{tag.Name}
           </div>
       </div>
