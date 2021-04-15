@@ -15,9 +15,21 @@ func apiFileList(c *gin.Context) {
 			"msg": err,
 		})
 	} else {
-		files := createFileList(files)
+		httpFilters := c.QueryArray("filter")
+		filters := getFiltersFromQueryArray(httpFilters)
+		dbDocuments := findDocuments(filters)
+		var filteredDocuments []Document
+		for _, dbDoc := range dbDocuments {
+			for _, fileDoc := range files {
+				if fileDoc.Name() == dbDoc.Name {
+					document := mergeDbDocWithFileDoc(dbDoc, fileDoc)
+					filteredDocuments = append(filteredDocuments, document)
+					break
+				}
+			}
+		}
 		c.JSON(200, gin.H{
-			"files": files,
+			"files": filteredDocuments,
 		})
 	}
 }

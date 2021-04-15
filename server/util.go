@@ -45,14 +45,18 @@ func createDocumentFromFile(fileInfo os.FileInfo) (Document, error) {
 	if err != nil {
 		return Document{}, err
 	}
-	document := Document{
-		Name:    fileInfo.Name(),
-		Size:    fileInfo.Size(),
-		LastMod: fileInfo.ModTime(),
-		Tags:    tags,
-		Url:     fmt.Sprintf("/api/v1/content/%s", fileInfo.Name()),
-	}
+	document := mergeDbDocWithFileDoc(DbDocument{Tags: tags}, fileInfo)
 	return document, nil
+}
+
+func mergeDbDocWithFileDoc(dbDoc DbDocument, fileDoc os.FileInfo) Document {
+	return Document{
+		Name:    fileDoc.Name(),
+		Size:    fileDoc.Size(),
+		LastMod: fileDoc.ModTime(),
+		Tags:    dbDoc.Tags,
+		Url:     fmt.Sprintf("/api/v1/content/%s", fileDoc.Name()),
+	}
 }
 
 func fileExists(path string) (bool, error) {

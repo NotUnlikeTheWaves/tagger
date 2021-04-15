@@ -43,26 +43,13 @@ func initDb() {
 func findTags(filters []Tag) []Tag {
 	db := client.Database("tagger")
 	coll := db.Collection("documents")
-	tags := []Tag{}
 
-	var mongoFilter []bson.M
-	// Add a 1=1
-	mongoFilter = append(mongoFilter, bson.M{
-		"$expr": bson.M{
-			"$eq": []int{1, 1},
-		},
-	})
-	for _, filter := range filters {
-		mongoFilter = append(mongoFilter, bson.M{
-			"Tags": bson.M{"$elemMatch": filter},
-		})
-	}
+	mongoFilter := createMongoTagFilter(filters)
 
+	returnTags := []Tag{}
 	coll.Aggregate(ctx, []bson.M{
 		bson.M{
-			"$match": bson.M{
-				"$and": mongoFilter,
-			},
+			"$match": mongoFilter,
 		},
 		bson.M{
 			"$unwind": "$Tags",
@@ -79,8 +66,33 @@ func findTags(filters []Tag) []Tag {
 				"Hidden": "$_id.Hidden",
 			},
 		},
-	}).All(&tags)
-	return tags
+	}).All(&returnTags)
+	return returnTags
+}
+
+func createMongoTagFilter(filters []Tag) bson.M {
+	var mongoFilter []bson.M
+	// Add a 1=1
+	mongoFilter = append(mongoFilter, bson.M{
+		"$expr": bson.M{
+			"$eq": []int{1, 1},
+		},
+	})
+	for _, filter := range filters {
+		mongoFilter = append(mongoFilter, bson.M{
+			"Tags": bson.M{"$elemMatch": filter},
+		})
+	}
+	return bson.M{"$and": mongoFilter}
+}
+
+func findDocuments(filters []Tag) []DbDocument {
+	db := client.Database("tagger")
+	coll := db.Collection("documents")
+	var documents []DbDocument
+	mongoFilter := createMongoTagFilter(filters)
+	coll.Find(ctx, mongoFilter).All(&documents)
+	return documents
 }
 
 func findDocumentTags(name string) ([]Tag, error) {
