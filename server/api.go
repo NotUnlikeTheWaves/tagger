@@ -36,7 +36,7 @@ func apiGetDocument(c *gin.Context) {
 }
 
 func apiTagList(c *gin.Context) {
-	tags := GetTags()
+	tags := findTags()
 	// httpFilters := c.QueryArray("filter")
 	// filters := getFiltersFromQueryArray(httpFilters)
 	c.JSON(200, gin.H{
