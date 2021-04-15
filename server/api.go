@@ -56,6 +56,19 @@ func apiTagList(c *gin.Context) {
 	})
 }
 
+func apiRefresh(c *gin.Context) {
+	files, err := ioutil.ReadDir(getDocumentDir())
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err,
+		})
+	}
+	createFileList(files)
+	c.JSON(200, gin.H{
+		"msg": "Success",
+	})
+}
+
 func getFiltersFromQueryArray(queryArray []string) []Tag {
 	var filters []Tag
 	for _, v := range queryArray {
