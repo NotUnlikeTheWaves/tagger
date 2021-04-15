@@ -14,15 +14,11 @@ class TagOverview extends React.Component {
     }
 
     componentDidMount() {
-        console.log("hey")
         this.loadTagList()
     }
 
     loadTagList() {
-        console.log("state in load-tag-list:")
-        console.log(this.state.filter)
         var query = this.createFilterQuery()
-        console.log("query is: " + query)
         fetch(apiEndpoint + "/api/v1/tagList" + query)
             .then(res => res.json())
             .then(
@@ -54,31 +50,16 @@ class TagOverview extends React.Component {
         return ""
     }
 
-    empty() {
-        console.log("state in empty function")
-        console.log(this.state.filter)
-    }
-
     switchFilter(tag) {
         const index = this.indexOfTagInFilter(tag)
-        console.log("index is: " + index)
-        console.log("index check:")
-        console.log(this.state.filter)
-        console.log("tag:")
-        console.log(tag)
-        console.log("------")
         if (index == -1) {
             const filter = this.state.filter.concat(tag)
-            console.log("add filter:")
-            console.log(filter)
             this.setState({
                 filter: filter
             }, () => {this.loadTagList()})
         } else {
             const filter = this.state.filter
             filter.splice(index, 1)
-            console.log("delete filter:")
-            console.log(filter)
             this.setState({
                 filter: filter
             }, () => {this.loadTagList()})
@@ -102,10 +83,6 @@ class TagOverview extends React.Component {
                     </div>
                 </div>
             }
-
-            // tags.filter(tag => tag.Hidden === false).map((tag, i) => {
-            //     return <div key={i} onClick={() => deleteCallback(tag)}>{RenderTag(tag)}</div>
-            // })
 
             return (
                 <div class={"flex flex-col items-center gap-2"}>
