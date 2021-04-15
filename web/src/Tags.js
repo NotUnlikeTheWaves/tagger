@@ -92,7 +92,7 @@ class TagOverview extends React.Component {
             const tags = this.state.tags
             const RenderTag = (tag) => {
                 const textColor = !tag.Hidden ? "text-white" : "text-blue-300"
-                const isFilter = this.indexOfTagInFilter(tag) != -1 ? " underline border-red-500 bg-red-900 " : " bg-black border-white "
+                const isFilter = this.indexOfTagInFilter(tag) != -1 ? " underline border-red-600 bg-red-900 " : " bg-black border-white "
                 return <div class="px-1">
                     <div
                         class={"border rounded " + textColor + isFilter + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}
