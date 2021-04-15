@@ -36,16 +36,15 @@ func apiGetDocument(c *gin.Context) {
 }
 
 func apiTagList(c *gin.Context) {
-	tags := findTags()
-	// httpFilters := c.QueryArray("filter")
-	// filters := getFiltersFromQueryArray(httpFilters)
+	httpFilters := c.QueryArray("filter")
+	filters := getFiltersFromQueryArray(httpFilters)
+	tags := findTags(filters)
 	c.JSON(200, gin.H{
 		"tags": tags,
 	})
 }
 
 func getFiltersFromQueryArray(queryArray []string) []Tag {
-	fmt.Println("Printing filter lines:")
 	var filters []Tag
 	for _, v := range queryArray {
 		split := strings.SplitN(v, "|", 2)

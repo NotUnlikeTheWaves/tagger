@@ -40,11 +40,30 @@ func initDb() {
 	fmt.Println("Init db done.")
 }
 
-func findTags() []Tag {
+func findTags(filters []Tag) []Tag {
 	db := client.Database("tagger")
 	coll := db.Collection("documents")
 	tags := []Tag{}
+
+	var mongoFilter []bson.M
+	// Add a 1=1
+	mongoFilter = append(mongoFilter, bson.M{
+		"$expr": bson.M{
+			"$eq": []int{1, 1},
+		},
+	})
+	for _, filter := range filters {
+		mongoFilter = append(mongoFilter, bson.M{
+			"Tags": bson.M{"$elemMatch": filter},
+		})
+	}
+
 	coll.Aggregate(ctx, []bson.M{
+		bson.M{
+			"$match": bson.M{
+				"$and": mongoFilter,
+			},
+		},
 		bson.M{
 			"$unwind": "$Tags",
 		},
