@@ -130,7 +130,7 @@ class Document extends React.Component {
         <div class="w-2/3">
           {RenderDocument(this.state.document)}
 
-          <div class="text-yellow-400 text-right underline">
+          <div class="text-yellow-400 text-right underline truncate">
             {this.state.document.Name}
           </div>
         </div>
