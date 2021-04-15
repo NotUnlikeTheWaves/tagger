@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,9 +37,28 @@ func apiGetDocument(c *gin.Context) {
 
 func apiTagList(c *gin.Context) {
 	tags := GetTags()
+	// httpFilters := c.QueryArray("filter")
+	// filters := getFiltersFromQueryArray(httpFilters)
 	c.JSON(200, gin.H{
 		"tags": tags,
 	})
+}
+
+func getFiltersFromQueryArray(queryArray []string) []Tag {
+	fmt.Println("Printing filter lines:")
+	var filters []Tag
+	for _, v := range queryArray {
+		split := strings.SplitN(v, "|", 2)
+		if len(split) != 2 {
+			fmt.Printf("Couldn't parse tagList filter: %s", v)
+			continue
+		}
+		filters = append(filters, Tag{
+			Hidden: split[0] == "1",
+			Name:   split[1],
+		})
+	}
+	return filters
 }
 
 func apiAddTags(c *gin.Context) {
