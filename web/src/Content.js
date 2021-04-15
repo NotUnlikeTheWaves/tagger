@@ -62,13 +62,13 @@ class Document extends React.Component {
   }
 
   addTag(tag) {
-    var result = ApiAddTags(this.state.document, [tag])
-    result.then(succes => {
-      if(succes === true) {
-        var document = {...this.state.document}
-        document.Tags.push(tag)
-        this.setState({
-          document: document
+    const result = ApiAddTags(this.state.document, [tag])
+    result.then(response => {
+      if(response.ok === true) {
+        response.json().then(newdoc => {
+          this.setState({
+            document: newdoc
+          })
         })
       } else {
         console.log("Failed to add tag! Tag:")
@@ -78,13 +78,13 @@ class Document extends React.Component {
   }
 
   removeTag(tag) {
-    var result = ApiDeleteTags(this.state.document, [tag])
-    result.then(succes => {
-      if(succes === true) {
-        var document = {...this.state.document}
-        document.Tags = document.Tags.filter(e => e != tag)
-        this.setState({
-          document: document
+    const result = ApiDeleteTags(this.state.document, [tag])
+    result.then(response => {
+      if(response.ok === true) {
+        response.json().then(newdoc => {
+          this.setState({
+            document: newdoc
+          })
         })
       } else {
         console.log("Failed to delete tag! Tag:")

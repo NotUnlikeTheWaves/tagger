@@ -8,7 +8,7 @@ async function ApiAddTags(document, tags) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(tags)
     })
-    return response.ok
+    return response
 }
 async function ApiDeleteTags(document, tags) {
     //"/api/v1/document/:fileName/tags"
@@ -18,7 +18,7 @@ async function ApiDeleteTags(document, tags) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(tags)
     })
-    return response.ok
+    return response
 }
 
 
