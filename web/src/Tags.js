@@ -92,10 +92,10 @@ class TagOverview extends React.Component {
             const tags = this.state.tags
             const RenderTag = (tag) => {
                 const textColor = !tag.Hidden ? "text-white" : "text-blue-300"
-                const underline = this.indexOfTagInFilter(tag) != -1 ? " underline " : ""
+                const isFilter = this.indexOfTagInFilter(tag) != -1 ? " underline border-red-500 bg-red-900 " : " bg-black border-white "
                 return <div class="px-1">
                     <div
-                        class={"bg-black border rounded " + textColor + underline + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}
+                        class={"border rounded " + textColor + isFilter + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}
                         onClick = {() => this.switchFilter(tag)}
                     >
                         #{tag.Name}
