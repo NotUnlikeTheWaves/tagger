@@ -18,6 +18,10 @@ class TagOverview extends React.Component {
     }
 
     loadTagList() {
+        console.log("setting filters:")
+        console.log(this.state.filter)
+        // [...var] because react is a special type of moronic
+        this.props.setFilters([...this.state.filter])
         var query = this.createFilterQuery()
         fetch(apiEndpoint + "/api/v1/tagList" + query)
             .then(res => res.json())

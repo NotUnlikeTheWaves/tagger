@@ -1,6 +1,5 @@
 import React from "react";
 import { RenderDocument } from "./Content"
-import { ApiDeleteTags } from "./Api"
 
 // Source: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/modals/regular
 

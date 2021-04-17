@@ -30,7 +30,13 @@ class Content extends React.Component {
       )
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("comp did up")
+  }
+
   render() {
+    console.log("active filters:")
+    console.log(this.props.filters)
     if (this.state.docsLoaded === false) {
       return <div>There is no content yet!</div>
     } else {
