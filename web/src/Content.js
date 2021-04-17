@@ -8,12 +8,31 @@ class Content extends React.Component {
     this.state = {
       docs: [],
       docsLoaded: false,
-      error: null
+      error: null,
+      filters: props.filters,
+      reloadContent: this.loadContent.bind(this),
+      flipFlop: true
     }
   }
 
   componentDidMount() {
-    fetch(apiEndpoint + "/api/v1/contentList")
+    this.loadContent()
+  }
+
+  createFilterQuery(filters) {
+    if(filters.length > 0) {
+        const parameters = filters.map(tag => "filter=" + (tag.Hidden ? 1 : 0) + "|" + tag.Name)
+        const query = "?" + parameters.join('&')
+        return query
+    }
+    return ""
+}
+
+  loadContent() {
+    console.log("lc filters:")
+    console.log(this.props.filters)
+    const queryParams = this.createFilterQuery(this.props.filters)
+    fetch(apiEndpoint + "/api/v1/contentList" + queryParams)
       .then(res => res.json())
       .then(
         (result) => {
@@ -30,13 +49,29 @@ class Content extends React.Component {
       )
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("comp did up")
+  componentDidUpdate(prevProps) {
+    if(prevProps.filters !== this.props.filters) {
+      this.loadContent()
+    }
   }
 
+  // static getDerivedStateFromProps(props, current_state) {
+  //   if(props.filters !== current_state.filters) {
+  //     console.log("new filter:")
+  //     console.log(props.filters)
+  //     console.log("old state:")
+  //     console.log(props.filters)
+  //     current_state.reloadContent()
+  //     return {
+  //       filters: props.filters,
+  //       flipFlop: !current_state.flipFlop
+  //     }
+  //   }
+  // }
+
   render() {
-    console.log("active filters:")
-    console.log(this.props.filters)
+    console.log("docs")
+    console.log(this.state.docs)
     if (this.state.docsLoaded === false) {
       return <div>There is no content yet!</div>
     } else {
@@ -45,7 +80,7 @@ class Content extends React.Component {
           {
             this.state.docs["files"].map((document, i) => {
               return (
-                  <div key={i}>
+                  <div key={document.Name}>
                     <div class="block border-solid rounded border-4 border-blue-600 hover:bg-opacity-100 bg-opacity-75 bg-gray-500 px-2 py-2">
                       <Document document={document} />
                     </div>
