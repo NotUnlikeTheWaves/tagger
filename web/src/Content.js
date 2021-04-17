@@ -8,10 +8,7 @@ class Content extends React.Component {
     this.state = {
       docs: [],
       docsLoaded: false,
-      error: null,
-      filters: props.filters,
-      reloadContent: this.loadContent.bind(this),
-      flipFlop: true
+      error: null
     }
   }
 
@@ -29,8 +26,6 @@ class Content extends React.Component {
 }
 
   loadContent() {
-    console.log("lc filters:")
-    console.log(this.props.filters)
     const queryParams = this.createFilterQuery(this.props.filters)
     fetch(apiEndpoint + "/api/v1/contentList" + queryParams)
       .then(res => res.json())
@@ -55,23 +50,7 @@ class Content extends React.Component {
     }
   }
 
-  // static getDerivedStateFromProps(props, current_state) {
-  //   if(props.filters !== current_state.filters) {
-  //     console.log("new filter:")
-  //     console.log(props.filters)
-  //     console.log("old state:")
-  //     console.log(props.filters)
-  //     current_state.reloadContent()
-  //     return {
-  //       filters: props.filters,
-  //       flipFlop: !current_state.flipFlop
-  //     }
-  //   }
-  // }
-
   render() {
-    console.log("docs")
-    console.log(this.state.docs)
     if (this.state.docsLoaded === false) {
       return <div>There is no content yet!</div>
     } else {
