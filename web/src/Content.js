@@ -1,5 +1,5 @@
 import React from 'react'
-import {apiEndpoint, ApiAddTags, ApiDeleteTags} from './Api'
+import {apiEndpoint, ApiAddTags, ApiDeleteTags, ApiGetContent} from './Api'
 import EditTags from './EditTags'
 
 class Content extends React.Component {
@@ -26,10 +26,8 @@ class Content extends React.Component {
 }
 
   loadContent() {
-    const queryParams = this.createFilterQuery(this.props.filters)
-    fetch(apiEndpoint + "/api/v1/contentList" + queryParams)
-      .then(res => res.json())
-      .then(
+    const response = ApiGetContent(this.props.filters)
+    response.then(
         (result) => {
           this.setState({
             docs: result,

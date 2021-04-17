@@ -1,5 +1,5 @@
 import React from 'react'
-import apiEndpoint from './Api'
+import {ApiGetTags} from './Api'
 
 class TagOverview extends React.Component {
     constructor(props) {
@@ -14,28 +14,26 @@ class TagOverview extends React.Component {
     }
 
     componentDidMount() {
-        this.loadTagList()
+        this.loadTags()
     }
 
-    loadTagList() {
+    loadTags() {
         // [...var] because react is a special type of moronic
         this.props.setFilters([...this.state.filter])
-        var query = this.createFilterQuery()
-        fetch(apiEndpoint + "/api/v1/tagList" + query)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        tags: result.tags,
-                        tagsLoaded: true
-                    })
-                },
-                (error) => {
-                    this.setState({
-                        error: error
-                    })
-                }
-            )
+        const response = ApiGetTags(this.state.filter)
+        response.then(
+            (result) => {
+                this.setState({
+                    tags: result.tags,
+                    tagsLoaded: true
+                })
+            },
+            (error) => {
+                this.setState({
+                    error: error
+                })
+            }
+        )
     }
 
     indexOfTagInFilter(tag) {
@@ -58,13 +56,13 @@ class TagOverview extends React.Component {
             const filter = this.state.filter.concat(tag)
             this.setState({
                 filter: filter
-            }, () => {this.loadTagList()})
+            }, () => {this.loadTags()})
         } else {
             const filter = this.state.filter
             filter.splice(index, 1)
             this.setState({
                 filter: filter
-            }, () => {this.loadTagList()})
+            }, () => {this.loadTags()})
         }
     }
 

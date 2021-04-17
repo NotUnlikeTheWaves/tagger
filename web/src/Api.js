@@ -21,6 +21,30 @@ async function ApiDeleteTags(document, tags) {
     return response
 }
 
+async function ApiGetTags(filters) {
 
-export {apiEndpoint, ApiAddTags, ApiDeleteTags}
+    const query = createFilterQuery(filters)
+    const response = fetch(apiEndpoint + "/api/v1/tagList" + query)
+        .then(res => res.json())
+    return response
+}
+
+async function ApiGetContent(filters) {
+    const query = createFilterQuery(filters)
+    const response = fetch(apiEndpoint + "/api/v1/contentList" + query)
+      .then(res => res.json())
+    return response
+}
+
+
+function createFilterQuery(filters) {
+    if(filters.length > 0) {
+        const parameters = filters.map(tag => "filter=" + (tag.Hidden ? 1 : 0) + "|" + tag.Name)
+        const query = "?" + parameters.join('&')
+        return query
+    }
+    return ""
+  }
+
+export {apiEndpoint, ApiAddTags, ApiDeleteTags, ApiGetTags, ApiGetContent}
 export default apiEndpoint
