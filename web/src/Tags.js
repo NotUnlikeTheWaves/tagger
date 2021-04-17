@@ -88,15 +88,15 @@ class TagOverview extends React.Component {
                 <div class={"flex flex-col items-center gap-2"}>
                     <div class="flex flex-row flex-wrap mr-0 ">
                         {
-                            tags.filter(tag => tag.Hidden === false).map((m, i) => {
-                                return <div key={i}>{RenderTag(m)}</div>
+                            tags.filter(tag => tag.Hidden === false).map((tag, i) => {
+                                return <div key={tag.Name}>{RenderTag(tag)}</div>
                             })
                         }
                     </div>
                     <div class="flex flex-row flex-wrap">
                         {
-                            tags.filter(tag => tag.Hidden === true).map((m, i) => {
-                                return <div key={i}>{RenderTag(m)}</div>
+                            tags.filter(tag => tag.Hidden === true).map((tag, i) => {
+                                return <div key={tag.Name}>{RenderTag(tag)}</div>
                             })
                         }
                     </div>

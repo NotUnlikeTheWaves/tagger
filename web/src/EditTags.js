@@ -29,14 +29,14 @@ export default function EditTags(props) {
             <div class="flex flex-row flex-wrap mr-0 ">
                 {
                     tags.filter(tag => tag.Hidden === false).map((tag, i) => {
-                        return <div key={i} onClick={() => deleteCallback(tag)}>{RenderTag(tag)}</div>
+                        return <div key={tag.Name} onClick={() => deleteCallback(tag)}>{RenderTag(tag)}</div>
                     })
                 }
             </div>
             <div class="flex flex-row flex-wrap">
                 {
                     tags.filter(tag => tag.Hidden === true).map((tag, i) => {
-                        return <div key={i} onClick={() => deleteCallback(tag)}>{RenderTag(tag)}</div>
+                        return <div key={tag.Name} onClick={() => deleteCallback(tag)}>{RenderTag(tag)}</div>
                     })
                 }
             </div>
