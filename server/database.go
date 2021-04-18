@@ -94,7 +94,7 @@ func findDocuments(filters []Tag) []DbDocument {
 	coll := db.Collection("documents")
 	var documents []DbDocument
 	mongoFilter := createMongoTagFilter(filters)
-	coll.Find(ctx, mongoFilter).All(&documents)
+	coll.Find(ctx, mongoFilter).Sort("-DateCreated").All(&documents)
 	return documents
 }
 
