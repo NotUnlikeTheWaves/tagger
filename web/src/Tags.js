@@ -56,6 +56,9 @@ class TagOverview extends React.Component {
     }
 
     switchFilter(tag) {
+        if(this.indexOfTagInTagList(tag, this.state.applicableTags) == -1) {
+            return
+        }
         const index = this.indexOfTagInTagList(tag, this.state.filter)
         if (index == -1) {
             const filter = this.state.filter.concat(tag)
