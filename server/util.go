@@ -51,11 +51,13 @@ func createDocumentFromFile(fileInfo os.FileInfo) (Document, error) {
 
 func mergeDbDocWithFileDoc(dbDoc DbDocument, fileDoc os.FileInfo) Document {
 	return Document{
-		Name:    fileDoc.Name(),
-		Size:    fileDoc.Size(),
-		LastMod: fileDoc.ModTime(),
-		Tags:    dbDoc.Tags,
-		Url:     fmt.Sprintf("/api/v1/content/%s", fileDoc.Name()),
+		Name:         fileDoc.Name(),
+		Size:         fileDoc.Size(),
+		LastMod:      fileDoc.ModTime(),
+		Tags:         dbDoc.Tags,
+		Url:          fmt.Sprintf("/api/v1/content/%s", fileDoc.Name()),
+		DateCreated:  dbDoc.DateCreated,
+		DateModified: dbDoc.DateModified,
 	}
 }
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/qiniu/qmgo"
 	"gopkg.in/mgo.v2/bson"
@@ -14,8 +15,10 @@ var ctx context.Context
 
 // Internal representation of DB document.
 type DbDocument struct {
-	Name string `bson:"Name"`
-	Tags []Tag  `bson:"Tags"`
+	Name         string    `bson:"Name"`
+	Tags         []Tag     `bson:"Tags"`
+	DateCreated  time.Time `bson:"DateCreated"`
+	DateModified time.Time `bson:"DateModifed"`
 }
 
 func initDb() {
@@ -105,8 +108,10 @@ func findDocumentTags(name string) ([]Tag, error) {
 		// If the doc doesn't exist, create it
 		if err.Error() == qmgo.ErrNoSuchDocuments.Error() {
 			coll.InsertOne(ctx, DbDocument{
-				Name: name,
-				Tags: []Tag{},
+				Name:         name,
+				Tags:         []Tag{},
+				DateCreated:  time.Now(),
+				DateModified: time.Now(),
 			})
 			return []Tag{}, nil
 		}
@@ -121,8 +126,9 @@ func updateDocument(document Document) error {
 	coll := db.Collection("documents")
 
 	dbDoc := DbDocument{
-		Tags: document.Tags,
-		Name: document.Name,
+		Tags:         document.Tags,
+		Name:         document.Name,
+		DateModified: time.Now(),
 	}
 
 	err := coll.UpdateOne(ctx, bson.M{"Name": document.Name}, bson.M{
