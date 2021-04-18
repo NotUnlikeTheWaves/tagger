@@ -16,15 +16,6 @@ class Content extends React.Component {
     this.loadContent()
   }
 
-  createFilterQuery(filters) {
-    if(filters.length > 0) {
-        const parameters = filters.map(tag => "filter=" + (tag.Hidden ? 1 : 0) + "|" + tag.Name)
-        const query = "?" + parameters.join('&')
-        return query
-    }
-    return ""
-}
-
   loadContent() {
     const response = ApiGetContent(this.props.filters)
     response.then(

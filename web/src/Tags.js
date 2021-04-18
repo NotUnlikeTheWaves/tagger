@@ -46,15 +46,6 @@ class TagOverview extends React.Component {
             v.Name === tag.Name)
     }
 
-    createFilterQuery() {
-        if(this.state.filter.length > 0) {
-            const parameters = this.state.filter.map(tag => "filter=" + (tag.Hidden ? 1 : 0) + "|" + tag.Name)
-            const query = "?" + parameters.join('&')
-            return query
-        }
-        return ""
-    }
-
     switchFilter(tag) {
         if(this.indexOfTagInTagList(tag, this.state.applicableTags) == -1) {
             return
