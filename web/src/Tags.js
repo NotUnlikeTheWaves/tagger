@@ -6,26 +6,31 @@ class TagOverview extends React.Component {
         super(props)
         this.state = {
             tags: [],
+            applicableTags: [],
             filter: [],
             tagsLoaded: false,
             error: null
         }
-        this.indexOfTagInFilter.bind(this)
     }
 
     componentDidMount() {
-        this.loadTags()
+        (async () => {
+            await this.loadTags()
+            this.setState({
+                tags: this.state.applicableTags,
+                tagsLoaded: true
+            })
+        })();
     }
 
-    loadTags() {
+    async loadTags() {
         // [...var] because react is a special type of moronic
         this.props.setFilters([...this.state.filter])
         const response = ApiGetTags(this.state.filter)
-        response.then(
+        await response.then(
             (result) => {
                 this.setState({
-                    tags: result.tags,
-                    tagsLoaded: true
+                    applicableTags: result.tags
                 })
             },
             (error) => {
@@ -36,8 +41,8 @@ class TagOverview extends React.Component {
         )
     }
 
-    indexOfTagInFilter(tag) {
-        return this.state.filter.findIndex(v => v.Hidden === tag.Hidden &&
+    indexOfTagInTagList(tag, list) {
+        return list.findIndex(v => v.Hidden === tag.Hidden &&
             v.Name === tag.Name)
     }
 
@@ -51,7 +56,7 @@ class TagOverview extends React.Component {
     }
 
     switchFilter(tag) {
-        const index = this.indexOfTagInFilter(tag)
+        const index = this.indexOfTagInTagList(tag, this.state.filter)
         if (index == -1) {
             const filter = this.state.filter.concat(tag)
             this.setState({
@@ -71,12 +76,16 @@ class TagOverview extends React.Component {
             return <div>There are no loaded tags yet!</div>
         } else {
             const tags = this.state.tags
-            const RenderTag = (tag) => {
+            console.log("applicable")
+            console.log(this.state.applicableTags)
+
+            const RenderTag = (tag, isSelected, isApplicable) => {
                 const textColor = !tag.Hidden ? "text-white" : "text-blue-300"
-                const isFilter = this.indexOfTagInFilter(tag) != -1 ? " underline border-red-600 bg-red-900 " : " bg-black border-white "
+                const filterMarkup = isSelected != -1 ? " underline border-red-600 bg-red-900 " : " bg-black border-white "
+                const applicableMarkup = isApplicable ? " opacity-100 cursor-pointer " : " opacity-40 cursor-not-allowed "
                 return <div class="px-1">
                     <div
-                        class={"border rounded " + textColor + isFilter + " hover:text-black hover:bg-white cursor-pointer px-1 py-1"}
+                        class={"border rounded " + textColor + filterMarkup + applicableMarkup + " hover:text-black hover:bg-white px-1 py-1"}
                         onClick = {() => this.switchFilter(tag)}
                     >
                         #{tag.Name}
@@ -89,14 +98,28 @@ class TagOverview extends React.Component {
                     <div class="flex flex-row flex-wrap mr-0 ">
                         {
                             tags.filter(tag => tag.Hidden === false).map((tag, i) => {
-                                return <div key={tag.Name}>{RenderTag(tag)}</div>
+                                console.log("checking tag: " + tag.Name)
+                                console.log(this.indexOfTagInTagList(tag, this.state.applicableTags) != -1)
+                                return (
+                                    <div key={tag.Name}>
+                                        {RenderTag(tag,
+                                            this.indexOfTagInTagList(tag, this.state.filter),
+                                            this.indexOfTagInTagList(tag, this.state.applicableTags) != -1 )}
+                                    </div>
+                                )
                             })
                         }
                     </div>
                     <div class="flex flex-row flex-wrap">
                         {
                             tags.filter(tag => tag.Hidden === true).map((tag, i) => {
-                                return <div key={tag.Name}>{RenderTag(tag)}</div>
+                                return (
+                                    <div key={tag.Name}>
+                                        {RenderTag(tag,
+                                            this.indexOfTagInTagList(tag, this.state.filter),
+                                            this.indexOfTagInTagList(tag, this.state.applicableTags) != -1)}
+                                    </div>
+                                )
                             })
                         }
                     </div>
