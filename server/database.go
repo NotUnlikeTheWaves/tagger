@@ -109,7 +109,12 @@ func findDocumentTags(name string) ([]Tag, error) {
 		if err.Error() == qmgo.ErrNoSuchDocuments.Error() {
 			coll.InsertOne(ctx, DbDocument{
 				Name:         name,
-				Tags:         []Tag{},
+				Tags:         []Tag{
+					Tag{
+						Name: "untagged",
+						Hidden: false,
+					},
+				},
 				DateCreated:  time.Now(),
 				DateModified: time.Now(),
 			})
