@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
+	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,6 +35,35 @@ func apiFileList(c *gin.Context) {
 			"files": filteredDocuments,
 		})
 	}
+}
+
+func apiUploadFiles(c *gin.Context) {
+	form, _ := c.MultipartForm()
+	files := form.File["file[]"]
+
+	for _, file := range files {
+		dir := getDocumentDir()
+		filePath := filepath.Join(dir, file.Filename)
+
+		pathExists, _ := fileExists(filePath)
+		parts := strings.Split(filePath, ".")
+		extension := parts[len(parts)-1]
+		rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+		for pathExists {
+			file.Filename = fmt.Sprintf("%x.%s", rnd.Int63(), extension)
+			filePath = filepath.Join(dir, file.Filename)
+			pathExists, _ = fileExists(filePath)
+		}
+
+		dest := filepath.Join(dir, file.Filename)
+
+		fmt.Printf("Saving file %s to dir %s\n", file.Filename, dest)
+		err := c.SaveUploadedFile(file, dest)
+		if err != nil {
+			fmt.Printf("err saving file: %s\n", err.Error())
+		}
+	}
+	c.String(200, fmt.Sprintf("%d files uploaded!", len(files)))
 }
 
 func apiGetDocument(c *gin.Context) {
