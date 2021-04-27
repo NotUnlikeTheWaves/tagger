@@ -61,9 +61,14 @@ func apiUploadFiles(c *gin.Context) {
 		err := c.SaveUploadedFile(file, dest)
 		if err != nil {
 			fmt.Printf("err saving file: %s\n", err.Error())
+			c.JSON(400, gin.H{
+				"msg": err,
+			})
 		}
 	}
-	c.String(200, fmt.Sprintf("%d files uploaded!", len(files)))
+	c.JSON(200, gin.H{
+		"msg": "Success",
+	})
 }
 
 func apiGetDocument(c *gin.Context) {
