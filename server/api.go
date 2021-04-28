@@ -44,15 +44,17 @@ func apiUploadFiles(c *gin.Context) {
 	for _, file := range files {
 		dir := getDocumentDir()
 		filePath := filepath.Join(dir, file.Filename)
-
 		pathExists, _ := fileExists(filePath)
-		parts := strings.Split(filePath, ".")
-		extension := parts[len(parts)-1]
-		rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
-		for pathExists {
-			file.Filename = fmt.Sprintf("%x.%s", rnd.Int63(), extension)
-			filePath = filepath.Join(dir, file.Filename)
-			pathExists, _ = fileExists(filePath)
+		if pathExists {
+			baseName := file.Filename
+			parts := strings.Split(filePath, ".")
+			extension := parts[len(parts)-1]
+			rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+			for pathExists {
+				file.Filename = fmt.Sprintf("%s-%x.%s", baseName, rnd.Int63(), extension)
+				filePath = filepath.Join(dir, file.Filename)
+				pathExists, _ = fileExists(filePath)
+			}
 		}
 
 		dest := filepath.Join(dir, file.Filename)
