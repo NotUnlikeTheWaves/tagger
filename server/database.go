@@ -51,18 +51,18 @@ func findTags(filters []Tag) []Tag {
 
 	returnTags := []Tag{}
 	coll.Aggregate(ctx, []bson.M{
-		bson.M{
+		{
 			"$match": mongoFilter,
 		},
-		bson.M{
+		{
 			"$unwind": "$Tags",
 		},
-		bson.M{
+		{
 			"$group": bson.M{
 				"_id": "$Tags",
 			},
 		},
-		bson.M{
+		{
 			"$project": bson.M{
 				"_id":    0,
 				"Name":   "$_id.Name",
@@ -110,7 +110,7 @@ func findDocument(name string) (DbDocument, error) {
 			doc = DbDocument{
 				Name: name,
 				Tags: []Tag{
-					Tag{
+					{
 						Name:   "untagged",
 						Hidden: false,
 					},
