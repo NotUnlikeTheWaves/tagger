@@ -98,7 +98,7 @@ func findDocuments(filters []Tag) []DbDocument {
 	return documents
 }
 
-func findDocumentTags(name string) ([]Tag, error) {
+func findDocument(name string) (DbDocument, error) {
 	db := client.Database("tagger")
 	coll := db.Collection("documents")
 	doc := DbDocument{}
@@ -107,23 +107,24 @@ func findDocumentTags(name string) ([]Tag, error) {
 	if err != nil {
 		// If the doc doesn't exist, create it
 		if err.Error() == qmgo.ErrNoSuchDocuments.Error() {
-			coll.InsertOne(ctx, DbDocument{
-				Name:         name,
-				Tags:         []Tag{
+			doc = DbDocument{
+				Name: name,
+				Tags: []Tag{
 					Tag{
-						Name: "untagged",
+						Name:   "untagged",
 						Hidden: false,
 					},
 				},
 				DateCreated:  time.Now(),
 				DateModified: time.Now(),
-			})
-			return []Tag{}, nil
+			}
+			coll.InsertOne(ctx, doc)
+			return doc, nil
 		}
 		// Otherwise something else went wrong.
-		return []Tag{}, err
+		return doc, err
 	}
-	return doc.Tags, err
+	return doc, nil
 }
 
 func updateDocument(document Document) error {
@@ -134,6 +135,7 @@ func updateDocument(document Document) error {
 		Tags:         document.Tags,
 		Name:         document.Name,
 		DateModified: time.Now(),
+		DateCreated:  document.DateCreated,
 	}
 
 	err := coll.UpdateOne(ctx, bson.M{"Name": document.Name}, bson.M{

@@ -41,11 +41,11 @@ func retrieveDocumentFromFileName(fileName string) (Document, error) {
 }
 
 func createDocumentFromFile(fileInfo os.FileInfo) (Document, error) {
-	tags, err := findDocumentTags(fileInfo.Name())
+	doc, err := findDocument(fileInfo.Name())
 	if err != nil {
 		return Document{}, err
 	}
-	document := mergeDbDocWithFileDoc(DbDocument{Tags: tags}, fileInfo)
+	document := mergeDbDocWithFileDoc(doc, fileInfo)
 	return document, nil
 }
 
