@@ -17,7 +17,7 @@ func main() {
 	// todo: put this in a config
 	r.MaxMultipartMemory = 50 << 20
 
-	r.GET("/api/v1/contentList", apiFileList)
+	r.GET("/api/v1/contentList", apiContentList)
 	r.GET("/api/v1/tagList", apiTagList)
 	r.GET("/api/v1/document/:fileName", apiGetDocument)
 	r.POST("/api/v1/document/:fileName/tags", apiAddTags)

@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func apiFileList(c *gin.Context) {
+func apiContentList(c *gin.Context) {
 	files, err := ioutil.ReadDir(getDocumentDir())
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -21,7 +21,7 @@ func apiFileList(c *gin.Context) {
 		httpFilters := c.QueryArray("filter")
 		filters := getFiltersFromQueryArray(httpFilters)
 		dbDocuments := findDocuments(filters)
-		var filteredDocuments []Document
+		filteredDocuments := []Document{}
 		for _, dbDoc := range dbDocuments {
 			for _, fileDoc := range files {
 				if fileDoc.Name() == dbDoc.Name {
