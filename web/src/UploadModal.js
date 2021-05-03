@@ -1,4 +1,5 @@
 import React from "react";
+import {ApiUploadFiles} from './Api'
 // Source: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/modals/regular
 
 
@@ -14,6 +15,13 @@ export default function UploadModal(document, updateTags) {
   function handleFileSelect(event) {
     console.log(event.target.files)
     setFiles([...event.target.files])
+  }
+
+  function handleUpload() {
+    console.log("uploading:")
+    console.log(files)
+    ApiUploadFiles(files)
+
   }
 
   return (
@@ -35,7 +43,7 @@ export default function UploadModal(document, updateTags) {
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-600 outline-none focus:outline-none">
-                  
+
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-700 rounded-t">
                   <h3 className="text-3xl font-semibold">
@@ -76,7 +84,7 @@ export default function UploadModal(document, updateTags) {
                     className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                     type="button"
                     style={{ transition: "all .15s ease" }}
-                    onClick={() => setShowModal(false)}
+                    onClick={handleUpload}
                   >
                     Upload
                   </button>

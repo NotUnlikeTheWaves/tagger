@@ -36,6 +36,23 @@ async function ApiGetContent(filters) {
     return response
 }
 
+async function ApiUploadFiles(files) {
+    console.log("trying to upload")
+    var xhr = new XMLHttpRequest()
+    var formData = new FormData()
+
+    xhr.open("POST", apiEndpoint + "/api/v1/document")
+    console.log("opened XHR")
+    files.forEach(file => {
+        formData.append("file[]", file)
+    })
+    console.log("fd:")
+    console.log(formData)
+    console.log("sending xhr")
+    xhr.send(formData)
+
+    console.log("sent XHR")
+}
 
 function createFilterQuery(filters) {
     if(filters.length > 0) {
@@ -46,5 +63,6 @@ function createFilterQuery(filters) {
     return ""
   }
 
-export {apiEndpoint, ApiAddTags, ApiDeleteTags, ApiGetTags, ApiGetContent}
+  // remove apiEndpoint from this!
+export {apiEndpoint, ApiAddTags, ApiDeleteTags, ApiGetTags, ApiGetContent, ApiUploadFiles}
 export default apiEndpoint
