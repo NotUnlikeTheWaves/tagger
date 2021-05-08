@@ -17,6 +17,7 @@ class Content extends React.Component {
   }
 
   loadContent() {
+    console.log("loading content")
     const response = ApiGetContent(this.props.filters)
     response.then(
         (result) => {

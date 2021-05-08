@@ -68,6 +68,9 @@ func apiUploadFiles(c *gin.Context) {
 			})
 		}
 	}
+
+	refreshDocuments()
+
 	c.JSON(200, gin.H{
 		"msg": "Success",
 	})
@@ -95,14 +98,22 @@ func apiTagList(c *gin.Context) {
 	})
 }
 
-func apiRefresh(c *gin.Context) {
+func refreshDocuments() error {
 	files, err := ioutil.ReadDir(getDocumentDir())
+	if err != nil {
+		return err
+	}
+	createFileList(files)
+	return nil
+}
+
+func apiRefresh(c *gin.Context) {
+	err := refreshDocuments()
 	if err != nil {
 		c.JSON(400, gin.H{
 			"msg": err,
 		})
 	}
-	createFileList(files)
 	c.JSON(200, gin.H{
 		"msg": "Success",
 	})

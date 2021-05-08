@@ -36,10 +36,20 @@ async function ApiGetContent(filters) {
     return response
 }
 
-async function ApiUploadFiles(files) {
+async function ApiUploadFiles(files, callback) {
     console.log("trying to upload")
     var xhr = new XMLHttpRequest()
     var formData = new FormData()
+
+    xhr.onreadystatechange = function() {
+        console.log("state change")
+        console.log(this)
+        if(this.readyState == 4) {
+            callback({
+                success: this.status === 200
+            })
+        }
+    }
 
     xhr.open("POST", apiEndpoint + "/api/v1/document")
     console.log("opened XHR")

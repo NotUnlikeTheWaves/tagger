@@ -3,7 +3,7 @@ import {ApiUploadFiles} from './Api'
 // Source: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/modals/regular
 
 
-export default function UploadModal(document, updateTags) {
+export default function UploadModal(props) {
   const [showModal, setShowModal] = React.useState(false);
   const [files, setFiles] = React.useState([]);
 
@@ -20,8 +20,16 @@ export default function UploadModal(document, updateTags) {
   function handleUpload() {
     console.log("uploading:")
     console.log(files)
-    ApiUploadFiles(files)
-
+    const callback = function(response) {
+      if(response.success == true) {
+        console.log("succ true")
+        setFiles([])
+        props.refresh()
+      } else {
+        console.log("succ false")
+      }
+    }
+    ApiUploadFiles(files, callback)
   }
 
   return (
