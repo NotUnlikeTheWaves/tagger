@@ -6,6 +6,7 @@ import {ApiUploadFiles} from './Api'
 export default function UploadModal(props) {
   const [showModal, setShowModal] = React.useState(false);
   const [files, setFiles] = React.useState([]);
+  const [fileEvent, setFileEvent] = React.useState([]);
 
   function close() {
     setShowModal(false)
@@ -15,6 +16,7 @@ export default function UploadModal(props) {
   function handleFileSelect(event) {
     console.log(event.target.files)
     setFiles([...event.target.files])
+    setFileEvent(event)
   }
 
   function handleUpload() {
@@ -25,6 +27,7 @@ export default function UploadModal(props) {
         console.log("succ true")
         setFiles([])
         props.refresh()
+        fileEvent.target.value = null
       } else {
         console.log("succ false")
       }
