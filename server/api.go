@@ -164,6 +164,7 @@ func apiAddTags(c *gin.Context) {
 			document.Tags = append(document.Tags, tagToAdd)
 		}
 	}
+	document.Tags = addOrRemoveUntaggedTag(document.Tags)
 	err = updateDocument(document)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -204,6 +205,7 @@ func apiRemoveTags(c *gin.Context) {
 			document.Tags = document.Tags[:len(document.Tags)-1]
 		}
 	}
+	document.Tags = addOrRemoveUntaggedTag(document.Tags)
 	err = updateDocument(document)
 	if err != nil {
 		c.JSON(400, gin.H{

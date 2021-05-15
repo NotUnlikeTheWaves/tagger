@@ -108,3 +108,26 @@ func mergeWithDbModel(doc Document, dbDoc DbDocument) Document {
 	doc.Tags = dbDoc.Tags
 	return doc
 }
+
+func addOrRemoveUntaggedTag(tagList []Tag) []Tag {
+	if len(tagList) > 1 {
+		remove := -1
+		for i, tag := range tagList {
+			if tag.Name == "untagged" {
+				remove = i
+				break
+			}
+		}
+		if remove != -1 {
+			tagList[remove] = tagList[len(tagList)-1]
+			tagList = tagList[:len(tagList)-1]
+		}
+	}
+	if len(tagList) == 0 {
+		tagList = append(tagList, Tag{
+			Hidden: false,
+			Name:   "untagged",
+		})
+	}
+	return tagList
+}
