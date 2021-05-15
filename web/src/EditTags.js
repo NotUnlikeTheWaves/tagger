@@ -13,6 +13,7 @@ export default function EditTags(props) {
       Name: addTagField,
       Hidden: false
     })
+    setAddTagField("")
   }
 
   function RenderTagsInEditMode(tags, deleteCallback) {
