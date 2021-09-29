@@ -3,8 +3,12 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io/fs"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/h2non/filetype"
 )
 
 func createFileList(files []os.FileInfo) []Document {
@@ -50,14 +54,27 @@ func createDocumentFromFile(fileInfo os.FileInfo) (Document, error) {
 }
 
 func mergeDbDocWithFileDoc(dbDoc DbDocument, fileDoc os.FileInfo) Document {
+	typeString := getFileType(fileDoc)
 	return Document{
 		Name:         fileDoc.Name(),
 		Size:         fileDoc.Size(),
 		Tags:         dbDoc.Tags,
 		Url:          fmt.Sprintf("/api/v1/content/%s", fileDoc.Name()),
+		Type:         typeString,
 		DateCreated:  dbDoc.DateCreated,
 		DateModified: dbDoc.DateModified,
 	}
+}
+
+func getFileType(file fs.FileInfo) string {
+	buf, _ := ioutil.ReadFile(filepath.Join(getDocumentDir(), file.Name()))
+	if filetype.IsVideo(buf) {
+		return "video"
+	}
+	if filetype.IsImage(buf) {
+		return "image"
+	}
+	return "unknown"
 }
 
 func fileExists(path string) (bool, error) {

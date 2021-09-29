@@ -160,7 +160,16 @@ class Document extends React.Component {
 }
   
 const RenderDocument = (document) => {
-  return <img class="mx-auto" src={apiEndpoint + document.Url} alt={document.Name} />
+  switch(document.Type) {
+    case "image": return (
+      <img class="mx-auto" src={apiEndpoint + document.Url} alt={document.Name} />
+    )
+    case "video": return (
+      <video class="mx-auto" src={apiEndpoint + document.Url} controls />
+    )
+    default: return (<div>unknown type</div>)
+  }
+  
 }
 
 export default Content

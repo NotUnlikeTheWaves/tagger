@@ -12,6 +12,7 @@ type Document struct {
 	Name         string
 	Size         int64
 	Url          string
+	Type         string
 	Tags         []Tag
 	DateCreated  time.Time
 	DateModified time.Time
