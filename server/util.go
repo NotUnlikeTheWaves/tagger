@@ -53,7 +53,6 @@ func mergeDbDocWithFileDoc(dbDoc DbDocument, fileDoc os.FileInfo) Document {
 	return Document{
 		Name:         fileDoc.Name(),
 		Size:         fileDoc.Size(),
-		LastMod:      fileDoc.ModTime(),
 		Tags:         dbDoc.Tags,
 		Url:          fmt.Sprintf("/api/v1/content/%s", fileDoc.Name()),
 		DateCreated:  dbDoc.DateCreated,
@@ -119,11 +118,13 @@ func addOrRemoveUntaggedTag(tagList []Tag) []Tag {
 			}
 		}
 		if remove != -1 {
+			fmt.Printf("removing tag\n")
 			tagList[remove] = tagList[len(tagList)-1]
 			tagList = tagList[:len(tagList)-1]
 		}
 	}
 	if len(tagList) == 0 {
+		fmt.Printf("adding tag\n")
 		tagList = append(tagList, Tag{
 			Hidden: false,
 			Name:   "untagged",

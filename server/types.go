@@ -11,7 +11,6 @@ type Tag struct {
 type Document struct {
 	Name         string
 	Size         int64
-	LastMod      time.Time // consider if this is still relevant vs DateCreated
 	Url          string
 	Tags         []Tag
 	DateCreated  time.Time
