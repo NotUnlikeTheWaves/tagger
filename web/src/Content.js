@@ -167,7 +167,7 @@ const RenderDocument = (document) => {
     case "video": return (
       <video class="mx-auto" src={apiEndpoint + document.Url} controls />
     )
-    default: return (<div>unknown type</div>)
+    default: return (<a href={apiEndpoint + document.Url} target="_blank"><img class="mx-auto" src="/default-file-icon.svg" /></a>)
   }
   
 }
