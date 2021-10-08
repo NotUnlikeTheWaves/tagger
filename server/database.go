@@ -21,16 +21,16 @@ type DbDocument struct {
 	DateModified time.Time `bson:"DateModifed"`
 }
 
-func initDb() {
+func initDb(config Config) {
 	fmt.Println("Init db")
 
 	ctx = context.Background()
 	var err error
 	client, err = qmgo.NewClient(ctx, &qmgo.Config{
-		Uri: "mongodb://mongo:27017",
+		Uri: fmt.Sprintf("mongodb://%s:%d", config.MongoHost, config.MongoPort),
 		Auth: &qmgo.Credential{
-			Password: "example",
-			Username: "root",
+			Password: config.MongoPass,
+			Username: config.MongoUser,
 		},
 	})
 

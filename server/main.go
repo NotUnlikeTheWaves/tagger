@@ -1,15 +1,26 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/kelseyhightower/envconfig"
 )
 
 func main() {
+	config := Config{}
+	err := envconfig.Process("Tagger", &config)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	documentDir := getDocumentDir()
 	initDocumentDirectory(documentDir)
-	initDb()
+	initDb(config)
 
 	// Set up Gin stuff
 	r := gin.Default()
@@ -28,4 +39,11 @@ func main() {
 	r.Static("/api/v1/content", "./documents")
 	r.Use(static.Serve("/", static.LocalFile("../web/build", true)))
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+}
+
+type Config struct {
+	MongoHost string `default:"localhost"`
+	MongoPort int    `default:"27017"`
+	MongoUser string `default:"root"`
+	MongoPass string `default:"example"`
 }
