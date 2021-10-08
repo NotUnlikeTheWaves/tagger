@@ -8,7 +8,7 @@ FROM golang:1.17
 
 WORKDIR /server
 COPY server .
-COPY --from=web /web /web
+COPY --from=web /web/build /web/build
 
 RUN go get -d -v
 RUN go install -v 
