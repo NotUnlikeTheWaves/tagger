@@ -12,7 +12,7 @@ import (
 
 func main() {
 	config := Config{}
-	err := envconfig.Process("Tagger", &config)
+	err := envconfig.Process("TAGGER", &config)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -42,8 +42,8 @@ func main() {
 }
 
 type Config struct {
-	MongoHost string `default:"localhost"`
-	MongoPort int    `default:"27017"`
-	MongoUser string `default:"root"`
-	MongoPass string `default:"example"`
+	MongoHost string `split_words:"true" default:"localhost"`
+	MongoPort int    `split_words:"true" default:"27017"`
+	MongoUser string `split_words:"true" default:"root"`
+	MongoPass string `split_words:"true" default:"example"`
 }
