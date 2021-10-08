@@ -21,3 +21,9 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
 
+  tagger:
+    image: tagger
+    restart: always
+    ports:
+      - 8080:8080
+    

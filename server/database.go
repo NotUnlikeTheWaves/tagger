@@ -27,7 +27,7 @@ func initDb() {
 	ctx = context.Background()
 	var err error
 	client, err = qmgo.NewClient(ctx, &qmgo.Config{
-		Uri: "mongodb://localhost:27017",
+		Uri: "mongodb://mongo:27017",
 		Auth: &qmgo.Credential{
 			Password: "example",
 			Username: "root",
