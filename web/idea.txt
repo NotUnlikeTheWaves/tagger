@@ -1,7 +1,0 @@
-
-Do one thing well: Assign tags to documents, and search on those tags to retrieve said documents
-
-1. Show all files in a folder (first stage)
-2. For non-images, generate show an empty image
-3. For videos, show a thumbnail
-4. 
