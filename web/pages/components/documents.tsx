@@ -1,7 +1,7 @@
 import { Tag, MapToLogicTag } from './tags'
 import { ApiDocument, GetDocuments } from '../api/documents'
 import React from 'react'
-import { Button, Box } from '@chakra-ui/react'
+import { SimpleGrid, Box } from '@chakra-ui/react'
 import { CreateCard } from './documentCard'
 
 export interface Document {
@@ -39,9 +39,9 @@ export class DocumentHolder extends React.Component<{}, DocumentHolderState> {
 
     render() {
         return (
-            <Box>
+            <SimpleGrid columns={4} px={10}>
                 {this.state.documents.map((doc) => <CreateCard document={doc} key={doc.name} />)}
-            </Box>
+            </SimpleGrid>
         )
     }
 }
