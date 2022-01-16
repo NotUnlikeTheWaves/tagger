@@ -4,6 +4,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { SimpleGrid, Flex, Box, Heading, Button, Tag, Center, Text, Container, VStack } from '@chakra-ui/react'
 import { TagSelecter } from './components/tags'
+import { DocumentHolder } from './components/documents'
 
 const Home: NextPage = () => {
   return (
@@ -27,6 +28,7 @@ const Home: NextPage = () => {
           </Container>
           { /* Tags section */ }
           <TagSelecter></TagSelecter>
+          <DocumentHolder></DocumentHolder>
         </VStack>
       </Center>
       </main>

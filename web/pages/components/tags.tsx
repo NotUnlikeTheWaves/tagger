@@ -1,16 +1,23 @@
 import { ApiTag, GetTags } from '../api/tags'
 import React from 'react'
 import { Button, Box } from '@chakra-ui/react'
-import { apiResolver } from 'next/dist/server/api-utils';
 
 type TagSelecterState = {
     tags: Tag[]
 };
 
-interface Tag {
+export interface Tag {
     name: string;
     hidden: boolean;
     selected: boolean;
+}
+
+export function MapToLogicTag(apiTag: ApiTag): Tag { 
+    return {
+        name: apiTag.name,
+        hidden: apiTag.hidden,
+        selected: false
+    };
 }
 
 export class TagSelecter extends React.Component<{}, TagSelecterState>  {
@@ -20,16 +27,12 @@ export class TagSelecter extends React.Component<{}, TagSelecterState>  {
     constructor(props: {}) {
         super(props);
         const tags = GetTags()
-        console.log(tags)
         this.state = {
-            tags: tags.map((tag) => this.mapToLogicTag(tag))
+            tags: tags.map((tag) => MapToLogicTag(tag))
         }
-        console.log("load")
     }
 
     render() {
-        console.log("render")
-        console.log(this.state)
         return (
             <Box>
                 {this.state.tags.map((tag) => 
@@ -45,13 +48,7 @@ export class TagSelecter extends React.Component<{}, TagSelecterState>  {
         )
     }
 
-    mapToLogicTag(apiTag: ApiTag): Tag { 
-        return {
-            name: apiTag.name,
-            hidden: apiTag.hidden,
-            selected: false
-        };
-    }
+    
 
     onClickTag(tag: Tag) {
         const idx = this.state.tags.findIndex((element) => element.name == tag.name);
