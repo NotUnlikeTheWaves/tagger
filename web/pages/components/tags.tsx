@@ -14,8 +14,8 @@ export interface Tag {
 
 export function MapToLogicTag(apiTag: ApiTag): Tag { 
     return {
-        name: apiTag.name,
-        hidden: apiTag.hidden,
+        name: apiTag.Name,
+        hidden: apiTag.Hidden,
         selected: false
     };
 }
@@ -29,7 +29,7 @@ export function CreateTag(props: {tag: Tag, onClick?: () => void}) {
                         size='xs' mx='2px'
                         key={tag.name}
                         onClick={() => onClick()}>
-                      {tag.name}
+                      #{tag.name}
                     </Button>
     )
 }
