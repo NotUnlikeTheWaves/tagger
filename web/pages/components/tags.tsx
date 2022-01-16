@@ -20,6 +20,20 @@ export function MapToLogicTag(apiTag: ApiTag): Tag {
     };
 }
 
+export function CreateTag(props: {tag: Tag, onClick?: () => void}) {
+    const tag = props.tag
+    const onClick = props.onClick ?? (() => {});
+    return (
+        <Button colorScheme='blue'
+                        variant={tag.selected ? 'solid' : 'outline'}
+                        size='xs' mx='2px'
+                        key={tag.name}
+                        onClick={() => onClick()}>
+                      {tag.name}
+                    </Button>
+    )
+}
+
 export class TagSelecter extends React.Component<{}, TagSelecterState>  {
     state: TagSelecterState = {
         tags: []
@@ -36,13 +50,7 @@ export class TagSelecter extends React.Component<{}, TagSelecterState>  {
         return (
             <Box>
                 {this.state.tags.map((tag) => 
-                    <Button colorScheme='blue'
-                        variant={tag.selected ? 'solid' : 'outline'}
-                        size='xs' mx='2px'
-                        key={tag.name}
-                        onClick={() => this.onClickTag(tag)}>
-                      {tag.name}
-                    </Button>
+                    <CreateTag tag={tag} onClick={() => this.onClickTag(tag)}/>
                 )}
             </Box>
         )
