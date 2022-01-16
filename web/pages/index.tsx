@@ -2,7 +2,8 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { SimpleGrid, Flex, Box, Heading, Spacer, Tag, Center, Text, Container, VStack } from '@chakra-ui/react'
+import { SimpleGrid, Flex, Box, Heading, Button, Tag, Center, Text, Container, VStack } from '@chakra-ui/react'
+import { TagSelecter } from './components/tags'
 
 const Home: NextPage = () => {
   return (
@@ -25,21 +26,7 @@ const Home: NextPage = () => {
             </Text>
           </Container>
           { /* Tags section */ }
-          <Box>
-            <Tag colorScheme='blue' mx='3px'>
-              Normal
-            </Tag>
-            <Tag variant='outline' colorScheme='blue'mx='3px'
-              _hover={{ background: "blue.800" }}
-            >
-              Outline
-            </Tag>
-            <Tag colorScheme='blue'
-              _hover={{ background: "blue.800" }}
-            >
-              Normal
-            </Tag>
-          </Box>
+          <TagSelecter></TagSelecter>
         </VStack>
       </Center>
       </main>
