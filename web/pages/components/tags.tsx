@@ -55,9 +55,7 @@ export class TagSelecter extends React.Component<{}, TagSelecterState>  {
             </Box>
         )
     }
-
     
-
     onClickTag(tag: Tag) {
         const idx = this.state.tags.findIndex((element) => element.name == tag.name);
         let stateChange = this.state.tags;

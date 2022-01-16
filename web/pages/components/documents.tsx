@@ -2,8 +2,9 @@ import { Tag, MapToLogicTag } from './tags'
 import { ApiDocument, GetDocuments } from '../api/documents'
 import React from 'react'
 import { Button, Box } from '@chakra-ui/react'
+import { CreateCard } from './documentCard'
 
-interface Document {
+export interface Document {
     name: string;
     tags: Tag[];
     url: string;
@@ -14,11 +15,9 @@ interface DocumentHolderState {
 }
 
 function MapToLogicDocument(apiDocument: ApiDocument): Document {
-    console.log("idv")
-    console.log(apiDocument)
     return {
         name: apiDocument.Name,
-        url: apiDocument.Url,
+        url: "http://localhost:8080" + apiDocument.Url,
         tags: apiDocument.Tags.map((tag) => MapToLogicTag(tag))
     }
 }
@@ -32,8 +31,6 @@ export class DocumentHolder extends React.Component<{}, DocumentHolderState> {
         super(props)
         GetDocuments()
             .then(res => {
-                console.log("test")
-                console.log(res)
                 this.setState({
                     documents: res.map((document) => MapToLogicDocument(document))
                 })
@@ -41,13 +38,9 @@ export class DocumentHolder extends React.Component<{}, DocumentHolderState> {
     }
 
     render() {
-        const document = this.state.documents[0]
-        if(document) {
-            return <Box>Hi there</Box>
-        }
         return (
             <Box>
-                {this.state.documents.map((doc) => <div>hi</div>)}
+                {this.state.documents.map((doc) => <CreateCard document={doc} key={doc.name} />)}
             </Box>
         )
     }
